@@ -8,7 +8,7 @@ function App() {
 
     <ProductCard name="Watch" image="https://picsum.photos/id/237/200/300" price="5000 LKR"/>
 
-    <ProductCard name="Mobile" image="https://picsum.photos/id/237/200/300" price="30,000 LKR"/>
+    <ProductCard name="Mobile" image="https://picsum.photos/id/237/200/300" price="40,000 LKR"/>
     
     </>
   )
