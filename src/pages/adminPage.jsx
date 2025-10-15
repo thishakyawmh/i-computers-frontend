@@ -1,4 +1,10 @@
-import { Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
+import { HiOutlineClipboardList } from "react-icons/hi";
+import { BsBoxes } from "react-icons/bs";
+import { LuUsersRound } from "react-icons/lu";
+import { MdOutlineRateReview } from "react-icons/md";
+
+
 
 export default function AdminPage(){
     return(
@@ -9,11 +15,10 @@ export default function AdminPage(){
                     <h1 className="text-xl m-[20px]">Admin</h1>
                 </div>
                 <div  className="w-full h-[400px] bg-white flex flex-col text-black">
-                    <a href="/admin">Orders</a>
-                    <a href="/admin/products">Products</a>
-                    <a href="/admin/users">Users</a>
-                    <a href="/admin/reviews">Reviews</a>
-
+                    <Link to="/admin" className="w-full flex justify-center items-center h-[50px] gap-[10px]"><HiOutlineClipboardList />Orders</Link>
+                    <Link to="/admin/products" className="w-full flex justify-center items-center h-[50px] gap-[10px]"><BsBoxes />Products</Link>
+                    <Link to="/admin/users" className="w-full flex justify-center items-center h-[50px] gap-[10px]"><LuUsersRound />Users</Link>
+                    <Link to="/admin/reviews" className="w-full flex justify-center items-center h-[50px] gap-[10px]"><MdOutlineRateReview />Reviews</Link>
                 </div>
 
             </div>
