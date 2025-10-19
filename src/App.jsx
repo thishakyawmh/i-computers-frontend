@@ -5,12 +5,13 @@ import LoginPage from './pages/loginPage'
 import HomePage from './pages/homePage'
 import RegisterPage from './pages/registerPage'
 import AdminPage from './pages/adminPage'
+import { Toaster } from 'react-hot-toast'
 
 
 function App() {
   return (
     <BrowserRouter>
-
+    <Toaster position='top-center' />
     <div className= "w-full h-screen bg-primary text-secondary">
       
       <Routes path='/'>
