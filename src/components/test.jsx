@@ -7,9 +7,9 @@ export default function Test() {
 
     return (
         <div className="w-full h-full flex flex-col justify-center items-center">
-            <div className="w-[400px] h-[300px] shadow-2xl flex justify-center items-center">
+            <div className="w-[420px] h-[300px] shadow-lg rounded-lg flex justify-center items-center bg-white">
 
-                <button className="w-[100px] h-[50px] bg-red-600 text-white" 
+                <button className="w-[110px] h-[50px] bg-red-500 text-white rounded-md" 
                 onClick={()=>{
                     setCount(count - 1);
                     console.log(count);
@@ -17,9 +17,9 @@ export default function Test() {
                     Decrement
                 </button>
 
-                <h1 className="w-[100px] h-[50px] text-[30px] text-center">{count}</h1>
+                <h1 className="w-[120px] h-[50px] text-[30px] text-center font-mono">{count}</h1>
 
-                <button className="w-[100px] h-[50px] bg-blue-600 text-white"
+                <button className="w-[110px] h-[50px] bg-blue-500 text-white rounded-md"
                 onClick={()=>{
                     setCount(count + 1);
                     console.log(count);
@@ -29,16 +29,16 @@ export default function Test() {
 
             </div>
 
-            <div className="w-[400px] h-[300px] shadow-2xl flex justify-center items-center flex-col">
-                <span className="h-[30px] font-bold mb-20 text-6xl">
+            <div className="w-[420px] h-[300px] shadow-lg rounded-lg flex justify-center items-center flex-col bg-white mt-6">
+                <span className="h-[30px] font-bold mb-12 text-6xl">
                     {status}
                 </span>
                 <div className="w-full h-[50px] justify-center items-center flex">
-                    <button className="w-[100px] h-full bg-red-600 text-white font-bold m-4" 
+                    <button className="w-[110px] h-full bg-red-500 text-white font-bold m-4 rounded-md" 
                     onClick={()=>{
                         setStatus("🌚")
                     }}>OFF</button>
-                    <button className="w-[100px] h-full bg-green-600 text-white font-bold m-4"
+                    <button className="w-[110px] h-full bg-green-500 text-white font-bold m-4 rounded-md"
                     onClick={()=>{
                         setStatus("🌞")
                     }}>ON</button>

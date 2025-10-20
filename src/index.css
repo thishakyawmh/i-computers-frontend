@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 :root {
   --color-primary: #FFFFFF;
   --color-secondary: #f1f1f1;
@@ -18,6 +19,12 @@
 .text-shadow-accent { text-shadow: 0 2px 8px rgba(0,123,255,0.18); }
 .login-card { background-color: var(--login-card-bg); border: 1px solid var(--login-card-border); }
 .login-input { background-color: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--color-primary); }
+
+/* hover utilities that rely on CSS variables */
+.hover-bg-accent:hover { background-color: var(--color-accent); }
+.hover-text-white:hover { color: #fff; }
+.accent{ color: var(--color-accent); }
+.accent-dark{ color: var(--color-accent-dark); }
 
 /* Customize the entire scrollbar */
 ::-webkit-scrollbar { width: 8px; }
