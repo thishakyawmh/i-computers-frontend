@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineProduct } from "react-icons/ai";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 
 export default function AdminAddProductsPage(){
@@ -17,6 +19,49 @@ export default function AdminAddProductsPage(){
     const [model, setModel] = useState("");
     const [stock, setStock] = useState("");
     const [isAvailable, setIsAvailable] = useState(false);
+    const navigate = useNavigate();
+
+    async function addProduct(){
+        const token = localStorage.getItem("token");
+        if(token==null){
+            toast.error("You must be logged in as an admin to add products.");
+            navigate("/admin/login");
+            return;
+        }
+        if (productID === "" || name === "" || description === "" || price === "" || category === "" || brand === "" || model === "" || stock === "") {
+            toast.error("Please fill in all required fields.");
+            return;
+        }
+
+        try {
+            const altNamesInArray = altnames.split(",");
+            const imagesInArray = images.split(",");
+            await axios.post(import.meta.env.VITE_BACKEND_URL + "/products/", {
+                productID : productID,
+                name : name,
+                altnames : altNamesInArray,
+                description : description,
+                price : price,
+                labelledPrice : labelledPrice,
+                images : imagesInArray,
+                category : category,
+                brand : brand,
+                model : model,
+                stock : stock,
+                isAvailable : isAvailable,
+            }, {
+                headers: {
+                    Authorization: "Bearer " + token
+               } 
+            })
+            toast.success("Product added successfully!");
+            navigate("/admin/products");
+            
+        } catch (error) {
+            toast.error("Error adding product. Please try again.");
+            console.error("Error adding product:", error);
+        }
+    }
     
     return(
         <div className="w-full h-full flex justify-center overflow-y-scroll p-[50px] items-start">
@@ -92,9 +137,9 @@ export default function AdminAddProductsPage(){
                     <div className="my-[15px] w-full">
                         <label className="block text-sm font-medium text-gray-700 mb-2">Images</label>
                         <input
-                            type="file"
+                            type="text"
                             value={images}
-                            onChange={(e)=>{setImages(e.target.files)}}
+                            onChange={(e)=>{setImages(e.target.value)}}
                             className="w-full h-10 rounded-lg border border-gray-200 px-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200"
                         />
                     </div>
@@ -158,7 +203,7 @@ export default function AdminAddProductsPage(){
                     </div>  
 
                     <Link to="/admin/products" className="mt-[30px] w-[48%] h-12 bg-red-500 text-white font-bold rounded-lg hover-bg-red-900 transition-colors flex items-center justify-center">Cancel</Link>
-                    <Link to="" className="mt-[30px] w-[48%] h-12 bg-accent text-white font-bold rounded-lg hover-bg-accent-dark transition-colors flex items-center justify-center">Add Product</Link>
+                    <button onClick={addProduct} className="mt-[30px] w-[48%] h-12 bg-accent btn-accent text-white font-bold rounded-lg hover-bg-accent-dark transition-colors flex items-center justify-center">Add Product</button>
 
 
 
