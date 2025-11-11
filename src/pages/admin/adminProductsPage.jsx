@@ -1,116 +1,137 @@
 import axios from "axios";
-import { use, useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { BiPlus } from "react-icons/bi";
 import { Link } from "react-router-dom";
 
-const products = [
-  {
-    productID: "PRD001",
-    name: "Logitech MX Master 3S Wireless Mouse",
-    altName: ["MX Master 3S", "Logitech Wireless Mouse"],
-    description:
-      "A high-performance wireless mouse with advanced ergonomic design, silent clicks, and customizable buttons. Perfect for productivity and creativity.",
-    price: 29900,
-    labelledPrice: "Rs. 29,900",
-    images: [
-      "https://example.com/images/mx-master-3s-front.jpg",
-      "https://example.com/images/mx-master-3s-side.jpg",
-    ],
-    category: "Mouse",
-    model: "MX Master 3S",
-    brand: "Logitech",
-    stock: 25,
-    isAvailable: true,
-  },
-  {
-    productID: "PRD002",
-    name: "Corsair K70 RGB Mechanical Keyboard",
-    altName: ["K70 RGB", "Corsair Gaming Keyboard"],
-    description:
-      "Mechanical gaming keyboard featuring per-key RGB backlighting, durable aluminum frame, and Cherry MX Red switches for smooth, fast keystrokes.",
-    price: 38500,
-    labelledPrice: "Rs. 38,500",
-    images: [
-      "https://example.com/images/k70-rgb-top.jpg",
-      "https://example.com/images/k70-rgb-side.jpg",
-    ],
-    category: "Keyboard",
-    model: "K70 RGB",
-    brand: "Corsair",
-    stock: 18,
-    isAvailable: true,
-  },
-  {
-    productID: "PRD003",
-    name: "Razer BlackShark V2 Gaming Headset",
-    altName: ["BlackShark V2", "Razer Headphones"],
-    description:
-      "Premium gaming headset with THX 7.1 surround sound, memory foam ear cushions, and detachable noise-canceling mic for immersive gaming sessions.",
-    price: 27900,
-    labelledPrice: "Rs. 27,900",
-    images: [
-      "https://example.com/images/blackshark-v2-front.jpg",
-      "https://example.com/images/blackshark-v2-side.jpg",
-    ],
-    category: "Headset",
-    model: "BlackShark V2",
-    brand: "Razer",
-    stock: 30,
-    isAvailable: true,
-  },
-];
-
 export default function AdminProductsPage() {
   const [products, setProducts] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
-  axios.get(import.meta.env.VITE_BACKEND_URL + "/products").then((response) => {
-    console.log(response.data);
-    setProducts(response.data);
-  });
+  useEffect(() => {
+    if (!loaded) {
+      axios
+        .get(import.meta.env.VITE_BACKEND_URL + "/products")
+        .then((response) => {
+          console.log(response.data);
+          setProducts(response.data);
+          setLoaded(true);
+        });
+    }
+  }, [loaded]);
 
   return (
-    <div className="w-full max-h-full flex justify-center p-10 relative">
-      <table>
-        <thead className="h-[100px]">
-          <tr>
-            <th>Image</th>
-            <th>Product ID</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Labelled Price</th>
-            <th>Category</th>
-            <th>Brand</th>
-            <th>Model</th>
-            <th>Stock</th>
-            <th>Availability</th>
-          </tr>
-        </thead>
+    <div className="w-full min-h-screen flex justify-center p-10 bg-secondary">
+      <div className="w-full max-w-7xl overflow-x-auto shadow-lg rounded-xl bg-primary">
+        <table className="min-w-full divide-y divide-gray-200 text-s">
+          <thead className="bg-accent text-white text-xs">
+            <tr>
+              <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide rounded-tl-lg">
+                Image
+              </th>
+              <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
+                Product ID
+              </th>
+              <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
+                Name
+              </th>
+              <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
+                Price
+              </th>
+              <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
+                Labelled Price
+              </th>
+              <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
+                Category
+              </th>
+              <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
+                Brand
+              </th>
+              <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
+                Model
+              </th>
+              <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
+                Stock
+              </th>
+              <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
+                Availability
+              </th>
+              <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide rounded-tr-lg">
+                Actions
+              </th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {products.map((item) => {
-            return (
-              <tr key={item.productID}>
-                <td>
-                  <img src={item.images[0]} className="w-[30px] h-[30px]" />
+          <tbody>
+            {products.map((item, idx) => (
+              <tr
+                key={item.productID}
+                className={idx % 2 === 0 ? "bg-secondary" : "bg-primary"}
+              >
+                <td className="px-3 py-2">
+                  <img
+                    src={item.images[0]}
+                    alt={item.name}
+                    className="w-10 h-10 object-cover rounded-md"
+                  />
                 </td>
-                <td>{item.productID}</td>
-                <td>{item.name}</td>
-                <td>{item.price}</td>
-                <td>{item.labelledPrice}</td>
-                <td>{item.category}</td>
-                <td>{item.brand}</td>
-                <td>{item.model}</td>
-                <td>{item.stock}</td>
-                <td>{item.isAvailable ? "In Stock" : "Out of Stock"}</td>
+                <td className="px-3 py-2 font-medium">{item.productID}</td>
+                <td className="px-3 py-2">{item.name}</td>
+                <td className="px-3 py-2">{item.price}</td>
+                <td className="px-3 py-2">{item.labelledPrice}</td>
+                <td className="px-3 py-2">{item.category}</td>
+                <td className="px-3 py-2">{item.brand}</td>
+                <td className="px-3 py-2">{item.model}</td>
+                <td className="px-3 py-2">{item.stock}</td>
+                <td className="px-3 py-2">
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                      item.isAvailable
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
+                    {item.isAvailable ? "In Stock" : "Out of Stock"}
+                  </span>
+                </td>
+                <td className="px-3 py-2">
+                  <button
+                    onClick={() => {
+                      const token = localStorage.getItem("token");
+                      const url =
+                        import.meta.env.VITE_BACKEND_URL +
+                        "/products/" +
+                        item.productID;
+
+                      axios
+                        .delete(url, {
+                          headers: {
+                            Authorization: `Bearer ${token}`,
+                          },
+                        })
+                        .then(() => {
+                          toast.success("Product deleted successfully");
+                          setLoaded(false);
+                        })
+                        .catch((err) => {
+                          toast.error("Failed to delete product");
+                          console.error("Delete error:", err);
+                        });
+                    }}
+                    className="w-20 bg-red-600 text-white font-semibold py-1 rounded-lg hover:bg-red-700 transition duration-200 cursor-pointer"
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <Link
         to="/admin/add-product"
-        className="p-[8px] absolute right-[20px] bottom-[20px] w-[50px] h-[50px] flex justify-center items-center text-7xl border-[2px] rounded-full hover:text-white hover-bg-accent"
+        className="fixed right-8 bottom-8 w-16 h-16 flex justify-center items-center text-4xl bg-accent text-white rounded-full shadow-lg hover:bg-accent-dark transition duration-300"
       >
         <BiPlus />
       </Link>

@@ -6,35 +6,78 @@ import { MdOutlineRateReview } from "react-icons/md";
 import AdminProductsPage from "./admin/adminProductsPage";
 import AdminAddProductsPage from "./admin/adminAddProductPage";
 
-
-
-export default function AdminPage(){
-    return(
-        <div className="w-full h-full max-h-full flex bg-gray-50">
-            <aside className="w-[300px] h-full bg-gray-100 shadow-inner">
-                <div className="w-full h-[100px] text-gray-800 flex items-center px-4">
-                    <img src="/logo.png" alt="Logo" className="h-12" />
-                    <h1 className="text-xl ml-4 font-semibold">Admin</h1>
-                </div>
-                <nav className="w-full h-[400px] bg-gray-100 flex flex-col text-gray-700">
-                    <Link to="/admin" className="w-full flex items-center h-12 gap-3 px-4 hover:bg-gray-200"> <HiOutlineClipboardList className="text-lg"/> <span>Orders</span></Link>
-                    <Link to="/admin/products" className="w-full flex items-center h-12 gap-3 px-4 hover:bg-gray-200"> <BsBoxes className="text-lg"/> <span>Products</span></Link>
-                    <Link to="/admin/users" className="w-full flex items-center h-12 gap-3 px-4 hover:bg-gray-200"> <LuUsersRound className="text-lg"/> <span>Users</span></Link>
-                    <Link to="/admin/reviews" className="w-full flex items-center h-12 gap-3 px-4 hover:bg-gray-200"> <MdOutlineRateReview className="text-lg"/> <span>Reviews</span></Link>
-                </nav>
-
-            </aside>
-            <main className="w-[calc(100%-300px)] text-gray-800 bg-white h-full max-h-full p-6 overflow-y-scroll rounded-l-2xl">
-                <Routes path="/">
-                  <Route path="/" element={<h1 className="text-2xl font-semibold">Admin Orders</h1>}/>
-                  <Route path="/products" element={<AdminProductsPage/>}/>
-                  <Route path="/add-product" element={<AdminAddProductsPage/>}/>
-                  <Route path="/users" element={<h1 className="text-2xl font-semibold">Admin Users</h1>}/>
-                  <Route path="/reviews" element={<h1 className="text-2xl font-semibold">Admin Reviews</h1>}/>  
-
-                </Routes>
-            </main>
-
+export default function AdminPage() {
+  return (
+    <div className="w-full h-full flex bg-gray-50">
+      <aside className="w-[250px] h-full bg-gray-100 shadow-inner flex flex-col">
+        <div className="w-full h-[90px] flex items-center px-4 border-b border-gray-200">
+          <img src="/logo.png" alt="Logo" className="h-10" />
+          <h1 className="text-lg ml-3 font-semibold text-gray-800">Admin</h1>
         </div>
-    )
+
+        <nav className="flex-1 flex flex-col mt-4">
+          <Link
+            to="/admin"
+            className="flex items-center h-12 px-4 gap-3 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+          >
+            <HiOutlineClipboardList className="text-lg" />
+            <span className="font-medium">Orders</span>
+          </Link>
+          <Link
+            to="/admin/products"
+            className="flex items-center h-12 px-4 gap-3 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+          >
+            <BsBoxes className="text-lg" />
+            <span className="font-medium">Products</span>
+          </Link>
+          <Link
+            to="/admin/users"
+            className="flex items-center h-12 px-4 gap-3 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+          >
+            <LuUsersRound className="text-lg" />
+            <span className="font-medium">Users</span>
+          </Link>
+          <Link
+            to="/admin/reviews"
+            className="flex items-center h-12 px-4 gap-3 text-gray-700 rounded-lg hover:bg-gray-200 transition"
+          >
+            <MdOutlineRateReview className="text-lg" />
+            <span className="font-medium">Reviews</span>
+          </Link>
+        </nav>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 bg-white h-full p-6 overflow-y-auto rounded-l-2xl shadow-inner">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <h1 className="text-2xl font-semibold text-gray-800">
+                Admin Orders
+              </h1>
+            }
+          />
+          <Route path="/products" element={<AdminProductsPage />} />
+          <Route path="/add-product" element={<AdminAddProductsPage />} />
+          <Route
+            path="/users"
+            element={
+              <h1 className="text-2xl font-semibold text-gray-800">
+                Admin Users
+              </h1>
+            }
+          />
+          <Route
+            path="/reviews"
+            element={
+              <h1 className="text-2xl font-semibold text-gray-800">
+                Admin Reviews
+              </h1>
+            }
+          />
+        </Routes>
+      </main>
+    </div>
+  );
 }

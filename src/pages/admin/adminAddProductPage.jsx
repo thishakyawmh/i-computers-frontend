@@ -21,7 +21,6 @@ export default function AdminAddProductsPage() {
 
   async function addProduct() {
     const token = localStorage.getItem("token");
-    console.log("Token from localStorage:", token); // add this line
 
     if (token == null) {
       toast.error("You must be logged in as an admin to add products.");
