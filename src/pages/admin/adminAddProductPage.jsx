@@ -198,6 +198,7 @@ export default function AdminAddProductsPage() {
               }}
               className="w-full h-10 rounded-lg border border-gray-200 px-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200"
             >
+              <option value="">Select Category</option>
               <option value="CPU">CPU</option>
               <option value="Graphic Cards">Graphic Cards</option>
               <option value="Computer Cases">Computer Cases</option>
@@ -262,14 +263,14 @@ export default function AdminAddProductsPage() {
               Availablity
             </label>
             <select
-              checked={isAvailable}
+              value={isAvailable ? "true" : "false"}
               onChange={(e) => {
-                setIsAvailable(e.target.checked);
+                setIsAvailable(e.target.value === "true");
               }}
               className="w-full h-10 rounded-lg border border-gray-200 px-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200"
             >
-              <option value={true}>Available</option>
-              <option value={false}>Not Available</option>
+              <option value="true">Available</option>
+              <option value="false">Not Available</option>
             </select>
           </div>
 

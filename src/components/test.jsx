@@ -1,51 +1,26 @@
 import { useState } from "react";
+import createClient from "@supabase/supabase-js";
 
 export default function Test() {
-
-    const [count, setCount] = useState(0);
-    const [status, setStatus] = useState("😉");
-
+    const [file, setFile] = useState(null);
+    function handleUpload() {
+        console.log(file)
+    }
+    const url = "https://lpzpnohiqprnrbyodfqm.supabase.co";
+    const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwenBub2hpcXBybnJieW9kZnFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2ODY3NzcsImV4cCI6MjA4MjI2Mjc3N30.85inejmyj5Rl9vs-XOJXdxEH-KL3HXraA5X9ZlOXdR0";
+    const supabase = createClient()
     return (
-        <div className="w-full h-full flex flex-col justify-center items-center">
-            <div className="w-[420px] h-[300px] shadow-lg rounded-lg flex justify-center items-center bg-white">
-
-                <button className="w-[110px] h-[50px] bg-red-500 text-white rounded-md" 
-                onClick={()=>{
-                    setCount(count - 1);
-                    console.log(count);
-                }}>
-                    Decrement
-                </button>
-
-                <h1 className="w-[120px] h-[50px] text-[30px] text-center font-mono">{count}</h1>
-
-                <button className="w-[110px] h-[50px] bg-blue-500 text-white rounded-md"
-                onClick={()=>{
-                    setCount(count + 1);
-                    console.log(count);
-                }}>
-                    Increment
-                </button>
-
-            </div>
-
-            <div className="w-[420px] h-[300px] shadow-lg rounded-lg flex justify-center items-center flex-col bg-white mt-6">
-                <span className="h-[30px] font-bold mb-12 text-6xl">
-                    {status}
-                </span>
-                <div className="w-full h-[50px] justify-center items-center flex">
-                    <button className="w-[110px] h-full bg-red-500 text-white font-bold m-4 rounded-md" 
-                    onClick={()=>{
-                        setStatus("🌚")
-                    }}>OFF</button>
-                    <button className="w-[110px] h-full bg-green-500 text-white font-bold m-4 rounded-md"
-                    onClick={()=>{
-                        setStatus("🌞")
-                    }}>ON</button>
-
-                </div>
-            </div>
-
+        <div className="w-full h-full flex items-center justify-center">
+            <input type="file" onChange={
+                (e) => {
+                    setFile(e.target.files[0])
+                }
+            } />
+            <button className="bg-red-600 text-white px-4 py-2 rounded-lg"
+                onClick={() => {
+                    handleUpload()
+                }}
+            >Upload</button>
         </div>
     )
 }

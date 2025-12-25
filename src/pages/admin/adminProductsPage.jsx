@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { BiPlus } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import Loaded from "../../components/loaded";
+import ProductDeleteButton from "../../components/productDeleteButton";
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState([]);
@@ -14,9 +15,13 @@ export default function AdminProductsPage() {
       axios
         .get(import.meta.env.VITE_BACKEND_URL + "/products")
         .then((response) => {
-          console.log(response.data);
+          console.log("Products fetched:", response.data);
           setProducts(response.data);
           setLoaded(true);
+        })
+        .catch((err) => {
+          console.error("Error fetching products:", err);
+          toast.error("Failed to load products");
         });
     }
   }, [loaded]);
@@ -87,43 +92,19 @@ export default function AdminProductsPage() {
                   <td className="px-3 py-2">{item.stock}</td>
                   <td className="px-3 py-2">
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        item.isAvailable
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
+                      className={`px-2 py-1 rounded-full text-xs font-semibold ${item.isAvailable
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                        }`}
                     >
                       {item.isAvailable ? "In Stock" : "Out of Stock"}
                     </span>
                   </td>
                   <td className="px-3 py-2">
-                    <button
-                      onClick={() => {
-                        const token = localStorage.getItem("token");
-                        const url =
-                          import.meta.env.VITE_BACKEND_URL +
-                          "/products/" +
-                          item.productID;
-
-                        axios
-                          .delete(url, {
-                            headers: {
-                              Authorization: `Bearer ${token}`,
-                            },
-                          })
-                          .then(() => {
-                            toast.success("Product deleted successfully");
-                            setLoaded(false);
-                          })
-                          .catch((err) => {
-                            toast.error("Failed to delete product");
-                            console.error("Delete error:", err);
-                          });
-                      }}
-                      className="w-20 bg-red-600 text-white font-semibold py-1 rounded-lg hover:bg-red-700 transition duration-200 cursor-pointer"
-                    >
-                      Delete
-                    </button>
+                    <ProductDeleteButton
+                      productID={item.productID}
+                      onDelete={() => setLoaded(false)}
+                    />
                   </td>
                 </tr>
               ))}

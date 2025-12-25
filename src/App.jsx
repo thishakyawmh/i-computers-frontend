@@ -11,19 +11,20 @@ import { Toaster } from 'react-hot-toast'
 function App() {
   return (
     <BrowserRouter>
-    <Toaster position='top-center' />
-    <div className= "w-full h-screen bg-primary text-secondary">
-      
-      <Routes path='/'>
-         <Route path='/*' element={<HomePage/>}/>
-         <Route path='/login' element={<LoginPage/>}/>
-         <Route path='/register' element={<RegisterPage/>}/>
-         <Route path='/admin/*' element={<AdminPage/>}/>
-      </Routes>
+      <Toaster position='top-center' />
+      <div className="w-full h-screen bg-primary text-secondary">
 
-    </div>
+        <Routes path='/'>
+          <Route path='/test' element={<Test />} />
+          <Route path='/*' element={<HomePage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/register' element={<RegisterPage />} />
+          <Route path='/admin/*' element={<AdminPage />} />
+        </Routes>
 
-    </BrowserRouter> 
+      </div>
+
+    </BrowserRouter>
   )
 }
 
