@@ -1,14 +1,12 @@
 import { useState } from "react";
-import createClient from "@supabase/supabase-js";
+import uploadFile from "../utils/mediaUpload";
 
 export default function Test() {
     const [file, setFile] = useState(null);
-    function handleUpload() {
-        console.log(file)
+    async function handleUpload() {
+        const url = await uploadFile(file)
+        console.log(url)
     }
-    const url = "https://lpzpnohiqprnrbyodfqm.supabase.co";
-    const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwenBub2hpcXBybnJieW9kZnFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2ODY3NzcsImV4cCI6MjA4MjI2Mjc3N30.85inejmyj5Rl9vs-XOJXdxEH-KL3HXraA5X9ZlOXdR0";
-    const supabase = createClient()
     return (
         <div className="w-full h-full flex items-center justify-center">
             <input type="file" onChange={

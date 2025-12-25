@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineProduct } from "react-icons/ai";
 import toast from "react-hot-toast";
 import axios from "axios";
+import uploadFile from "../../utils/mediaUpload";
 
 export default function AdminAddProductsPage() {
   const [productID, setProductID] = useState("");
@@ -11,13 +12,15 @@ export default function AdminAddProductsPage() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [labelledPrice, setLabelledPrice] = useState("");
-  const [images, setImages] = useState([]);
+  const [files, setFiles] = useState([]);
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
   const [stock, setStock] = useState("");
   const [isAvailable, setIsAvailable] = useState(false);
   const navigate = useNavigate();
+
+
 
   async function addProduct() {
     const token = localStorage.getItem("token");
@@ -27,6 +30,21 @@ export default function AdminAddProductsPage() {
       navigate("/admin/login");
       return;
     }
+
+    console.log(files);
+
+    const imagePromises = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const imagePromise = uploadFile(file);
+      imagePromises.push(imagePromise);
+    }
+
+    const imageUrls = await Promise.all(imagePromises).catch((error) => {
+      console.error("Error uploading images:", error);
+    });
+
     if (
       productID === "" ||
       name === "" ||
@@ -43,7 +61,6 @@ export default function AdminAddProductsPage() {
 
     try {
       const altNamesInArray = altnames.split(",");
-      const imagesInArray = images.split(",");
 
       await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/products/",
@@ -54,7 +71,7 @@ export default function AdminAddProductsPage() {
           description: description,
           price: price,
           labelledPrice: labelledPrice,
-          images: imagesInArray,
+          images: imageUrls,
           category: category,
           brand: brand,
           model: model,
@@ -178,10 +195,10 @@ export default function AdminAddProductsPage() {
               Images
             </label>
             <input
-              type="text"
-              value={images}
+              type="file"
+              multiple={true}
               onChange={(e) => {
-                setImages(e.target.value);
+                setFiles(e.target.files);
               }}
               className="w-full h-10 rounded-lg border border-gray-200 px-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200"
             />
