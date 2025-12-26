@@ -5,6 +5,7 @@ import { LuUsersRound } from "react-icons/lu";
 import { MdOutlineRateReview } from "react-icons/md";
 import AdminProductsPage from "./admin/adminProductsPage";
 import AdminAddProductsPage from "./admin/adminAddProductPage";
+import AdminUpdateProductPage from "./admin/adminUpdateProductPage";
 
 export default function AdminPage() {
   return (
@@ -47,7 +48,6 @@ export default function AdminPage() {
         </nav>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 bg-white h-full p-6 overflow-y-auto rounded-l-2xl shadow-inner">
         <Routes>
           <Route
@@ -60,6 +60,7 @@ export default function AdminPage() {
           />
           <Route path="/products" element={<AdminProductsPage />} />
           <Route path="/add-product" element={<AdminAddProductsPage />} />
+          <Route path="/update-product" element={<AdminUpdateProductPage />} />
           <Route
             path="/users"
             element={

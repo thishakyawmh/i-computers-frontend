@@ -101,6 +101,12 @@ export default function AdminProductsPage() {
                     </span>
                   </td>
                   <td className="px-3 py-2">
+                    <Link
+                      to={`/admin/update-product/`}
+                      className="mr-2 text-white bg-accent px-2 py-1 rounded-md"
+                      state={item}
+                    > Edit
+                    </Link>
                     <ProductDeleteButton
                       productID={item.productID}
                       onDelete={() => setLoaded(false)}
