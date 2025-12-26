@@ -6,12 +6,39 @@ import HomePage from './pages/homePage'
 import RegisterPage from './pages/registerPage'
 import AdminPage from './pages/adminPage'
 import { Toaster } from 'react-hot-toast'
+import Cart from './pages/cart'
+import Checkout from './pages/checkout'
 
 
 function App() {
   return (
     <BrowserRouter>
-      <Toaster position='top-center' />
+      <Toaster
+        position='top-right'
+        toastOptions={{
+          style: {
+            background: '#0a0a0a',
+            color: '#fff',
+            border: '1px solid rgba(255,255,255,0.1)',
+            borderRadius: '12px',
+            fontSize: '14px',
+            padding: '12px 16px',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+          },
+          success: {
+            iconTheme: {
+              primary: '#22c55e',
+              secondary: 'white',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: 'white',
+            },
+          },
+        }}
+      />
       <div className="w-full h-screen bg-primary text-secondary">
 
         <Routes path='/'>
@@ -20,6 +47,8 @@ function App() {
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage />} />
           <Route path='/admin/*' element={<AdminPage />} />
+          <Route path='/cart' element={<Cart />} />
+          <Route path='/checkout' element={<Checkout />} />
         </Routes>
 
       </div>

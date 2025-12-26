@@ -12,8 +12,14 @@ export default function AdminProductsPage() {
 
   useEffect(() => {
     if (!loaded) {
+      const token = localStorage.getItem("token");
+
       axios
-        .get(import.meta.env.VITE_BACKEND_URL + "/products")
+        .get(import.meta.env.VITE_BACKEND_URL + "/products", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
         .then((response) => {
           console.log("Products fetched:", response.data);
           setProducts(response.data);
@@ -27,103 +33,108 @@ export default function AdminProductsPage() {
   }, [loaded]);
 
   return (
-    <div className="w-full min-h-screen flex justify-center p-10 bg-secondary">
-      <div className="w-full max-w-7xl overflow-x-auto shadow-lg rounded-xl bg-primary">
-        {loaded ? (
-          <table className="min-w-full divide-y divide-gray-200 text-s">
-            <thead className="bg-accent text-white text-xs">
-              <tr>
-                <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide rounded-tl-lg">
-                  Image
-                </th>
-                <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
-                  Product ID
-                </th>
-                <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
-                  Name
-                </th>
-                <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
-                  Price
-                </th>
-                <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
-                  Labelled Price
-                </th>
-                <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
-                  Category
-                </th>
-                <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
-                  Brand
-                </th>
-                <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
-                  Model
-                </th>
-                <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
-                  Stock
-                </th>
-                <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide">
-                  Availability
-                </th>
-                <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide rounded-tr-lg">
-                  Actions
-                </th>
-              </tr>
-            </thead>
+    <div className="w-full relative">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold font-headings text-white">Product Management</h2>
+      </div>
 
-            <tbody>
-              {products.map((item, idx) => (
-                <tr
-                  key={item.productID}
-                  className={idx % 2 === 0 ? "bg-secondary" : "bg-primary"}
-                >
-                  <td className="px-3 py-2">
-                    <img
-                      src={item.images[0]}
-                      alt={item.name}
-                      className="w-10 h-10 object-cover rounded-md"
-                    />
-                  </td>
-                  <td className="px-3 py-2 font-medium">{item.productID}</td>
-                  <td className="px-3 py-2">{item.name}</td>
-                  <td className="px-3 py-2">{item.price}</td>
-                  <td className="px-3 py-2">{item.labelledPrice}</td>
-                  <td className="px-3 py-2">{item.category}</td>
-                  <td className="px-3 py-2">{item.brand}</td>
-                  <td className="px-3 py-2">{item.model}</td>
-                  <td className="px-3 py-2">{item.stock}</td>
-                  <td className="px-3 py-2">
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold ${item.isAvailable
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                        }`}
-                    >
-                      {item.isAvailable ? "In Stock" : "Out of Stock"}
-                    </span>
-                  </td>
-                  <td className="px-3 py-2">
-                    <Link
-                      to={`/admin/update-product/`}
-                      className="mr-2 text-white bg-accent px-2 py-1 rounded-md"
-                      state={item}
-                    > Edit
-                    </Link>
-                    <ProductDeleteButton
-                      productID={item.productID}
-                      onDelete={() => setLoaded(false)}
-                    />
-                  </td>
+      <div className="w-full bg-surface border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+        {loaded ? (
+          <div className="w-full overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead className="bg-[#050505] border-b border-white/10 text-xs text-gray-400 font-medium uppercase tracking-wider">
+                <tr>
+                  <th className="px-6 py-4 font-semibold">Image</th>
+                  <th className="px-6 py-4 font-semibold">Product Info</th>
+                  <th className="px-6 py-4 font-semibold">Pricing</th>
+                  <th className="px-6 py-4 font-semibold">Stock & Category</th>
+                  <th className="px-6 py-4 font-semibold">Availability</th>
+                  <th className="px-6 py-4 font-semibold text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-white/5 text-sm text-gray-300">
+                {products.map((item, idx) => (
+                  <tr
+                    key={item.productID}
+                    className="hover:bg-white/5 transition-colors duration-200"
+                  >
+                    <td className="px-6 py-4">
+                      <div className="w-12 h-12 bg-white/5 rounded-lg border border-white/10 overflow-hidden flex items-center justify-center">
+                        {(item.images && item.images.length > 0) ? (
+                          <img
+                            src={item.images[0]}
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-gray-600 text-xs">No Img</span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-col">
+                        <span className="font-semibold text-white">{item.name}</span>
+                        <span className="text-xs text-gray-500 font-mono mt-1">{item.productID}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-col">
+                        <span className="font-medium text-white">LKR {Number(item.price).toLocaleString()}</span>
+                        <span className="text-xs text-gray-500 line-through">LKR {Number(item.labelledPrice).toLocaleString()}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-primary-400 bg-primary-500/10 border border-primary-500/20 px-2 py-0.5 rounded uppercase tracking-wider">
+                            {item.category}
+                          </span>
+                        </div>
+                        <span className="text-xs text-gray-500">{item.stock} Units</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${item.isAvailable
+                          ? "bg-green-500/10 text-green-400 border border-green-500/20"
+                          : "bg-red-500/10 text-red-400 border border-red-500/20"
+                          }`}
+                      >
+                        <span className={`w-1.5 h-1.5 rounded-full ${item.isAvailable ? "bg-green-500" : "bg-red-500"}`}></span>
+                        {item.isAvailable ? "Active" : "Inactive"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-3">
+                        <Link
+                          to={`/admin/update-product/`}
+                          className="text-white hover:text-primary-400 transition-colors p-2 hover:bg-white/5 rounded-lg"
+                          state={item}
+                          title="Edit Product"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                        </Link>
+                        <ProductDeleteButton
+                          productID={item.productID}
+                          onDelete={() => setLoaded(false)}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
-          <Loaded />
+          <div className="w-full h-80 flex items-center justify-center">
+            <Loaded />
+          </div>
         )}
       </div>
 
       <Link
         to="/admin/add-product"
-        className="fixed right-8 bottom-8 w-16 h-16 flex justify-center items-center text-4xl bg-accent text-white rounded-full shadow-lg hover:bg-accent-dark transition duration-300"
+        className="fixed right-10 bottom-10 w-16 h-16 flex justify-center items-center text-3xl bg-green-600 text-white rounded-full shadow-lg shadow-green-600/40 hover:bg-green-500 hover:scale-110 hover:shadow-glow transition-all duration-300 z-50 border border-white/10"
       >
         <BiPlus />
       </Link>

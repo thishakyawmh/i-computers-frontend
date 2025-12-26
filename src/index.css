@@ -1,33 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
-
 :root {
-  --color-primary: #FFFFFF;
-  --color-secondary: #f1f1f1;
+  --color-primary: #000000;
+  --color-surface: #0a0a0a;
   --color-accent: #007BFF;
-  --color-text: #000000;
   --color-accent-dark: #0056b3;
-  --login-card-bg: rgba(255,255,255,0.06);
-  --login-card-border: rgba(255,255,255,0.12);
+  --color-text: #FFFFFF;
+  --color-text-muted: #94a3b8;
 }
 
-/* small utility classes to keep changes minimal */
-.bg-accent { background-color: var(--color-accent); }
-.bg-accent-dark { background-color: var(--color-accent-dark); }
-.text-accent { color: var(--color-accent); }
-.text-shadow-2xs { text-shadow: 0 1px 2px rgba(0,0,0,0.6); }
-.text-shadow-accent { text-shadow: 0 2px 8px rgba(0,123,255,0.18); }
-.login-card { background-color: var(--login-card-bg); border: 1px solid var(--login-card-border); }
-.login-input { background-color: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--color-primary); }
+body {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-/* hover utilities that rely on CSS variables */
-.hover-bg-accent:hover { background-color: var(--color-accent); }
-.hover-text-white:hover { color: #fff; }
-.accent{ color: var(--color-accent); }
-.accent-dark{ color: var(--color-accent-dark); }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Outfit', sans-serif;
+}
 
-/* Customize the entire scrollbar */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background-color: transparent; }
-::-webkit-scrollbar-thumb { background-color: #888; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background-color: #555; }
+button,
+a,
+input[type="submit"],
+input[type="button"] {
+  cursor: pointer;
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+.hover-bg-accent:hover {
+  background-color: var(--color-accent);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 20px rgba(0, 123, 255, 0.3);
+}
+
+.shadow-glow-lg {
+  box-shadow: 0 0 40px rgba(0, 123, 255, 0.4);
+}
+
+.bg-surface {
+  background-color: var(--color-surface);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+::selection {
+  background-color: rgba(0, 123, 255, 0.3);
+  color: #fff;
+}
+
+* {
+  scroll-behavior: smooth;
+}

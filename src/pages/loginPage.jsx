@@ -39,62 +39,78 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="w-full h-screen bg-[url('/login_bg.jpg')] bg-cover bg-center bg-no-repeat flex items-center">
-      <div className="w-1/2 h-full flex flex-col justify-center items-center px-8">
-        <img
-          src="/logo.png"
-          alt="logo"
-          className="w-[260px] h-auto mb-4 object-contain"
-        />
-        <h1 className="text-[42px] text-white text-shadow-2xs font-bold text-center text-shadow-accent">
-          Power Up Your World
-        </h1>
-        <p className="text-[16px] text-white font-semibold text-center italic max-w-md mt-2">
-          Your trusted partner for all things tech.
-        </p>
-      </div>
+    <div className="w-full min-h-screen bg-black flex items-center justify-center relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary-900/20 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-primary-600/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-      <div className="w-1/2 flex justify-center items-center px-8">
-        <div className="w-[420px] py-10 login-card backdrop-blur-md shadow-2xl rounded-xl flex flex-col justify-center items-center">
-          <h1 className="text-[36px] font-bold mb-6 text-white">Login</h1>
-          <input
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            type="text"
-            placeholder="Email"
-            className="w-[360px] h-[48px] rounded-lg mb-4 px-4 text-[16px] outline-none login-input focus:bg-transparent"
-          />
+      <div className="w-full max-w-[1200px] flex flex-col md:flex-row items-center justify-center gap-10 lg:gap-20 px-6 z-10">
 
-          <input
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            type="password"
-            placeholder="Password"
-            className="w-[360px] h-[48px] rounded-lg mb-2 px-4 text-[16px] outline-none login-input focus:bg-transparent"
-          />
+        <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left">
+          <div className="flex items-center gap-3 mb-8">
+            <img src="/logo.png" alt="logo" className="w-[60px] h-auto object-contain" />
+            <span className="text-4xl font-bold text-white font-headings tracking-wider">ICM</span>
+          </div>
 
-          <p className="w-[360px] text-left text-white text-sm mb-4">
-            <span className="text-gray-200 mr-1">Forgot password?</span>
-            <Link to="" className="text-accent font-bold italic">
-              Reset
-            </Link>
+          <h1 className="text-5xl md:text-6xl text-white font-bold font-headings leading-tight mb-6">
+            Power Up <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-primary-600">Your World</span>
+          </h1>
+          <p className="text-lg text-gray-400 font-light max-w-md">
+            Your trusted partner for premium high-performance computing. Access your account to manage orders and settings.
           </p>
+        </div>
 
-          <button
-            onClick={login}
-            className="w-[360px] h-[48px] bg-accent text-white rounded-lg text-[18px] font-bold hover:bg-accent-dark transition-colors mb-4"
-          >
-            Login
-          </button>
+        <div className="w-full md:w-1/2 max-w-[450px]">
+          <div className="bg-surface border border-white/10 p-8 md:p-10 rounded-3xl shadow-2xl backdrop-blur-xl relative">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary-500 to-transparent opacity-50"></div>
 
-          <p className="text-white text-sm mb-1">
-            Don't have an account?{" "}
-            <Link to="" className="text-accent font-bold italic">
-              Register here
-            </Link>
-          </p>
+            <h2 className="text-3xl font-bold font-headings text-white mb-2">Welcome Back</h2>
+            <p className="text-gray-500 mb-8">Please enter your details to sign in.</p>
+
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-gray-400 mb-1.5 block">Email Address</label>
+                <input
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="email"
+                  placeholder="name@example.com"
+                  className="w-full h-12 rounded-xl bg-black/50 border border-white/10 text-white px-4 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all placeholder:text-gray-600"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-400 mb-1.5 block">Password</label>
+                <input
+                  onChange={(e) => setPassword(e.target.value)}
+                  type="password"
+                  placeholder="••••••••"
+                  className="w-full h-12 rounded-xl bg-black/50 border border-white/10 text-white px-4 outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all placeholder:text-gray-600"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end mt-4 mb-6">
+              <Link to="" className="text-sm text-primary-500 hover:text-primary-400 font-medium transition-colors">
+                Forgot password?
+              </Link>
+            </div>
+
+            <button
+              onClick={login}
+              className="w-full h-12 bg-primary-600 hover:bg-primary-500 text-white rounded-xl font-bold shadow-lg shadow-primary-900/20 hover:shadow-glow transition-all duration-300"
+            >
+              Sign In
+            </button>
+
+            <div className="mt-8 text-center border-t border-white/5 pt-6">
+              <p className="text-gray-500 text-sm">
+                Don't have an account?{" "}
+                <Link to="" className="text-white hover:text-primary-400 font-semibold transition-colors">
+                  Create Account
+                </Link>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -51,11 +51,11 @@ export default function ProductDeleteButton(props) {
       </button>
       {isMessageOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-          <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 relative">
+          <div className="w-full max-w-md bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl p-6 relative">
             <button
               onClick={() => setIsMessageOpen(false)}
               aria-label="Close"
-              className="absolute -top-3 -right-3 inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/90 border border-gray-200 text-gray-700 shadow hover:scale-105 transition-transform"
+              className="absolute -top-3 -right-3 inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 border border-white/10 text-white hover:bg-white/20 transition-all cursor-pointer backdrop-blur-md"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -72,13 +72,13 @@ export default function ProductDeleteButton(props) {
             </button>
 
             <div className="text-center">
-              <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              <h2 className="text-xl font-semibold text-white mb-2">
                 Delete product
               </h2>
-              <p className="text-sm text-gray-600 mb-6">
+              <p className="text-sm text-gray-400 mb-6">
                 This action cannot be undone. Are you sure you want to delete
                 the product
-                <span className="ml-2 inline-block px-2 py-1 text-sm font-medium bg-red-50 text-red-700 rounded">
+                <span className="ml-2 inline-block px-2 py-1 text-sm font-medium bg-red-500/10 text-red-500 border border-red-500/20 rounded">
                   {productID}
                 </span>
                 ?
@@ -87,7 +87,7 @@ export default function ProductDeleteButton(props) {
               <div className="flex items-center justify-center gap-3">
                 <button
                   onClick={() => setIsMessageOpen(false)}
-                  className="px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
+                  className="px-4 py-2 rounded-lg border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -95,9 +95,9 @@ export default function ProductDeleteButton(props) {
                 <button
                   onClick={() => handleDelete()}
                   disabled={isDeleting}
-                  className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 shadow"
+                  className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-900/30 hover:shadow-red-900/50 transition-all cursor-pointer"
                 >
-                  Confirm Delete
+                  {isDeleting ? "Deleting..." : "Confirm Delete"}
                 </button>
               </div>
             </div>
