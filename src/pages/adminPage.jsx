@@ -6,6 +6,7 @@ import { MdOutlineRateReview } from "react-icons/md";
 import AdminProductsPage from "./admin/adminProductsPage";
 import AdminAddProductsPage from "./admin/adminAddProductPage";
 import AdminUpdateProductPage from "./admin/adminUpdateProductPage";
+import AdminOrders from "./admin/adminOrders";
 
 export default function AdminPage() {
   const location = useLocation();
@@ -68,14 +69,7 @@ export default function AdminPage() {
 
         <div className="p-8 relative z-10 w-full max-w-[1400px] mx-auto min-h-full">
           <Routes>
-            <Route
-              path="/"
-              element={
-                <h1 className="text-3xl font-bold font-headings text-white mb-6">
-                  Dashboard Overview
-                </h1>
-              }
-            />
+            <Route path="/" element={<AdminOrders />} />
             <Route path="/products" element={<AdminProductsPage />} />
             <Route path="/add-product" element={<AdminAddProductsPage />} />
             <Route path="/update-product" element={<AdminUpdateProductPage />} />

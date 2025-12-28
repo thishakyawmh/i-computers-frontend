@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import { getCart } from "../utils/cart";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaMoneyBillWave } from "react-icons/fa";
 import toast from "react-hot-toast";
 import axios from "axios";
 
 export default function Checkout() {
     const navigate = useNavigate();
-    const location = useLocation();
-
-    const [cart, setCart] = useState(location.state?.items || []);
-    const [total, setTotal] = useState(location.state?.total || 0);
+    const [cart, setCart] = useState([]);
+    const [total, setTotal] = useState(0);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -21,48 +20,63 @@ export default function Checkout() {
     });
 
     useEffect(() => {
-        if (!location.state) {
-            const items = getCart();
-            if (items.length === 0) {
-                toast.error("Your cart is empty");
-                navigate("/products");
-                return;
-            }
-            setCart(items);
-            const t = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-            setTotal(t);
+        const items = getCart();
+        if (items.length === 0) {
+            toast.error("Your cart is empty");
+            navigate("/products");
+            return;
         }
-    }, [navigate, location.state]);
+        setCart(items);
+        setTotal(items.reduce((acc, item) => acc + (item.price * item.quantity), 0));
+    }, [navigate]);
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handlePlaceOrder = () => {
         if (!formData.firstName || !formData.address || !formData.phone) {
-            toast.error("Please fill in all required fields");
-            return;
+            return toast.error("Please fill in all required fields");
         }
 
-        const orderData = {
-            ...formData,
-            items: cart,
-            total: total,
-            date: new Date().toISOString(),
-            status: "pending"
-        };
+        const token = localStorage.getItem("token");
+        if (!token) {
+            toast.error("Please login to place an order");
+            return navigate("/login");
+        }
 
-        console.log("Placing Order:", orderData);
+        setIsSubmitting(true);
 
-        toast.success("Order placed successfully!");
-        localStorage.removeItem("cart");
-        window.dispatchEvent(new Event("cartUpdated"));
-        navigate("/products");
+        axios.post(import.meta.env.VITE_BACKEND_URL + "/orders", {
+            items: cart.map(item => ({ productID: item.productID, quantity: item.quantity })),
+            address: formData.city ? `${formData.address}, ${formData.city}` : formData.address,
+            name: `${formData.firstName} ${formData.lastName}`.trim(),
+            notes: formData.notes || ""
+        },
+            { headers: { Authorization: `Bearer ${token}` } }
+        )
+            .then(response => {
+                toast.success(response.data.message || "Order placed successfully!");
+                localStorage.removeItem("cart");
+                window.dispatchEvent(new Event("cartUpdated"));
+                navigate("/products");
+            })
+            .catch(error => {
+                console.error("Order error:", error);
+                const msg = error.response?.data?.message || "Failed to place order";
+                toast.error(error.response?.status === 401 ? "Session expired. Please login again." : msg);
+                if (error.response?.status === 401) {
+                    localStorage.removeItem("token");
+                    navigate("/login");
+                }
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
     };
 
     return (
-        <div className="w-full min-h-screen bg-black pt-[80px] pb-20 relative">
+        <div className="w-full min-h-[calc(100vh-80px)] bg-black pb-20 relative">
             <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-primary-900/10 rounded-full blur-[120px] pointer-events-none"></div>
             <div className="fixed bottom-0 left-0 w-[500px] h-[500px] bg-green-900/10 rounded-full blur-[120px] pointer-events-none"></div>
 
@@ -212,9 +226,10 @@ export default function Checkout() {
 
                             <button
                                 onClick={handlePlaceOrder}
-                                className="w-full py-4 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl shadow-lg shadow-green-900/30 hover:shadow-glow transition-all duration-300"
+                                disabled={isSubmitting}
+                                className="w-full py-4 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl shadow-lg shadow-green-900/30 hover:shadow-glow transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                Place Order
+                                {isSubmitting ? "Placing Order..." : "Place Order"}
                             </button>
                         </div>
                     </div>

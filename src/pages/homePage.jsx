@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import Header from "../components/header";
 import ProductPage from "./productPage";
 import ProductOverview from "./productOverview";
+import Cart from "./cart";
+import Checkout from "./checkout";
 
 export default function HomePage() {
     return (
@@ -77,6 +79,9 @@ export default function HomePage() {
                         </div>
                     } />
                     <Route path="/overview/:id" element={<ProductOverview />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/checkout" element={<Checkout />} />
+
                     <Route path="*" element={
                         <div className="w-full py-40 text-center">
                             <h1 className="text-4xl font-bold font-headings text-white mb-4">Page Not Found</h1>

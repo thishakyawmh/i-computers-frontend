@@ -13,14 +13,12 @@ export default function Header() {
     };
 
     useEffect(() => {
-        // Initial load
         const updateCount = () => {
             const cart = getCart();
             setCartCount(cart.length);
         };
         updateCount();
 
-        // Listen for updates
         window.addEventListener("cartUpdated", updateCount);
         return () => window.removeEventListener("cartUpdated", updateCount);
     }, []);

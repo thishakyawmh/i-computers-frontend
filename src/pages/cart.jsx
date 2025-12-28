@@ -49,7 +49,7 @@ export default function Cart() {
 
     if (cart.length === 0) {
         return (
-            <div className="w-full min-h-screen bg-black flex flex-col items-center justify-center p-4 relative overflow-hidden">
+            <div className="w-full min-h-[calc(100vh-80px)] bg-black flex flex-col items-center justify-center p-4 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary-900/20 rounded-full blur-[120px] pointer-events-none"></div>
 
                 <div className="bg-surface border border-white/10 p-12 rounded-3xl flex flex-col items-center text-center max-w-md w-full shadow-2xl relative z-10">
@@ -70,7 +70,7 @@ export default function Cart() {
     }
 
     return (
-        <div className="w-full min-h-screen bg-black pt-[80px] pb-20 relative">
+        <div className="w-full min-h-[calc(100vh-80px)] bg-black pb-20 relative">
             <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-primary-900/10 rounded-full blur-[120px] pointer-events-none"></div>
 
             <div className="max-w-[1200px] mx-auto px-6 mt-12 relative z-10">
