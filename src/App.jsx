@@ -8,51 +8,55 @@ import AdminPage from './pages/adminPage'
 import { Toaster } from 'react-hot-toast'
 import Cart from './pages/cart'
 import Checkout from './pages/checkout'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
+// 373323418208-1npdm2o1d4taukdjqh1h4nnrc8tos46l.apps.googleusercontent.com
 
 function App() {
   return (
-    <BrowserRouter>
-      <Toaster
-        position='top-right'
-        toastOptions={{
-          style: {
-            background: '#0a0a0a',
-            color: '#fff',
-            border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: '12px',
-            fontSize: '14px',
-            padding: '12px 16px',
-            boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-          },
-          success: {
-            iconTheme: {
-              primary: '#22c55e',
-              secondary: 'white',
+    <GoogleOAuthProvider clientId="373323418208-1npdm2o1d4taukdjqh1h4nnrc8tos46l.apps.googleusercontent.com">
+      <BrowserRouter>
+        <Toaster
+          position='top-right'
+          toastOptions={{
+            style: {
+              background: '#0a0a0a',
+              color: '#fff',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '12px',
+              fontSize: '14px',
+              padding: '12px 16px',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
             },
-          },
-          error: {
-            iconTheme: {
-              primary: '#ef4444',
-              secondary: 'white',
+            success: {
+              iconTheme: {
+                primary: '#22c55e',
+                secondary: 'white',
+              },
             },
-          },
-        }}
-      />
-      <div className="w-full h-screen bg-primary text-secondary">
+            error: {
+              iconTheme: {
+                primary: '#ef4444',
+                secondary: 'white',
+              },
+            },
+          }}
+        />
+        <div className="w-full h-screen bg-primary text-secondary">
 
-        <Routes path='/'>
-          <Route path='/test' element={<Test />} />
-          <Route path='/*' element={<HomePage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/register' element={<RegisterPage />} />
-          <Route path='/admin/*' element={<AdminPage />} />
+          <Routes path='/'>
+            <Route path='/test' element={<Test />} />
+            <Route path='/*' element={<HomePage />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route path='/admin/*' element={<AdminPage />} />
 
-        </Routes>
+          </Routes>
 
-      </div>
+        </div>
 
-    </BrowserRouter>
+      </BrowserRouter>
+    </GoogleOAuthProvider>
   )
 }
 

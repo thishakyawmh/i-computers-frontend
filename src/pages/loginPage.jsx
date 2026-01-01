@@ -2,13 +2,18 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { useGoogleLogin } from "@react-oauth/google";
+import { FcGoogle } from "react-icons/fc";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [googleLogin, setGoogleLogin] = useState(false);
 
   async function login() {
+    setIsLoading(true);
     try {
       const res = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/users/login",
@@ -31,6 +36,43 @@ export default function LoginPage() {
     } catch (error) {
       toast.error("Login failed. Please try again.");
       console.log("Login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const googleLoginAction = useGoogleLogin({
+    onSuccess: (codeResponse) => handleGoogleLogin(codeResponse),
+    onError: (error) => console.log('Login Failed:', error)
+  });
+
+  async function handleGoogleLogin(googleData) {
+    setGoogleLogin(true);
+    try {
+      // If using useGoogleLogin (implicit flow), we get an access_token in googleData
+      // We'll send this to the backend. The backend needs to verify it with Google accordingly.
+      const res = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + "/users/google-login",
+        {
+          token: googleData.access_token // Changed from 'credential' to 'access_token' for custom button flow
+        }
+      );
+      if (res?.data?.token) {
+        localStorage.setItem("token", res.data.token);
+      }
+
+      if (res.data?.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+
+      toast.success("Google login successful! Welcome.");
+    } catch (error) {
+      console.error("Google login error:", error);
+      toast.error("Google login failed. Please try again.");
+    } finally {
+      setGoogleLogin(false);
     }
   }
 
@@ -49,7 +91,7 @@ export default function LoginPage() {
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl text-white font-bold font-headings leading-tight mb-4 sm:mb-6">
             Power Up <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-primary-600">Your World</span>
+            <span className="text-white bg-clip-text bg-gradient-to-r from-primary-400 to-primary-600">Your World</span>
           </h1>
           <p className="text-base sm:text-lg text-gray-400 font-light max-w-md hidden sm:block">
             Your trusted partner for premium high-performance computing. Access your account to manage orders and settings.
@@ -59,6 +101,14 @@ export default function LoginPage() {
         <div className="w-full md:w-1/2 max-w-[450px]">
           <div className="bg-surface border border-white/10 p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl backdrop-blur-xl relative">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary-500 to-transparent opacity-50"></div>
+
+            {/* Show loading overlay if google login is processing */}
+            {googleLogin && (
+              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col items-center justify-center rounded-3xl">
+                <div className="w-10 h-10 border-4 border-primary-500/30 border-t-primary-500 rounded-full animate-spin mb-4"></div>
+                <span className="text-white font-medium animate-pulse">Authenticating...</span>
+              </div>
+            )}
 
             <h2 className="text-2xl sm:text-3xl font-bold font-headings text-white mb-2">Welcome Back</h2>
             <p className="text-sm sm:text-base text-gray-500 mb-6 sm:mb-8">Please enter your details to sign in.</p>
@@ -93,10 +143,34 @@ export default function LoginPage() {
 
             <button
               onClick={login}
-              className="w-full h-12 bg-primary-600 hover:bg-primary-500 text-white rounded-xl font-bold shadow-lg shadow-primary-900/40 hover:shadow-glow transition-all duration-300 uppercase tracking-widest text-xs"
+              disabled={isLoading}
+              className="w-full h-12 bg-primary-600 hover:bg-primary-500 text-white rounded-xl font-bold shadow-lg shadow-primary-900/40 hover:shadow-glow transition-all duration-300 uppercase tracking-widest text-xs flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Sign In Now
+              {isLoading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Signing In...
+                </>
+              ) : (
+                "Sign In Now"
+              )}
             </button>
+
+            <div className="flex items-center gap-4 my-6">
+              <div className="h-px bg-white/10 flex-1"></div>
+              <span className="text-gray-500 text-xs font-medium uppercase tracking-widest">Or</span>
+              <div className="h-px bg-white/10 flex-1"></div>
+            </div>
+
+            <div className="w-full">
+              <button
+                onClick={() => googleLoginAction()}
+                className="w-full h-12 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl flex items-center justify-center gap-3 transition-all duration-300 group hover:border-primary-500/50"
+              >
+                <FcGoogle className="text-xl group-hover:scale-110 transition-transform" />
+                <span className="text-white font-medium text-sm">Continue with Google</span>
+              </button>
+            </div>
 
             <div className="mt-8 text-center border-t border-white/5 pt-6">
               <p className="text-gray-500 text-xs sm:text-sm">

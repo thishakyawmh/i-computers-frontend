@@ -84,7 +84,7 @@ export default function ProductOverview() {
             </div>
 
             <div className="relative z-10 w-full border-b border-white/5 backdrop-blur-sm">
-                <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-4 overflow-x-auto">
+                <div className="max-w-[1200px] mx-auto px-6 py-4 overflow-x-auto">
                     <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-medium whitespace-nowrap">
                         <a href="/products" className="text-gray-500 hover:text-white transition-colors">Products</a>
                         <svg className="w-3 h-3 sm:w-4 sm:h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
@@ -93,7 +93,28 @@ export default function ProductOverview() {
                 </div>
             </div>
 
-            <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 py-8 sm:py-12">
+            <div className="relative z-10 max-w-[1200px] mx-auto px-6 py-8 sm:py-12">
+                {/* Mobile Header (Visible only on small screens) */}
+                <div className="block lg:hidden mb-6">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
+                        <span className="px-2.5 py-1 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-400 text-[10px] font-bold uppercase tracking-widest">
+                            {product.brand || "Premium"}
+                        </span>
+                        {product.stock > 0 ? (
+                            <span className="px-2.5 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span> In Stock
+                            </span>
+                        ) : (
+                            <span className="px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-bold uppercase tracking-widest">
+                                Out of Stock
+                            </span>
+                        )}
+                    </div>
+                    <h1 className="text-2xl sm:text-3xl font-bold font-headings text-white leading-tight">
+                        {product.name}
+                    </h1>
+                </div>
+
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
 
                     <div className="lg:col-span-6">
@@ -118,24 +139,27 @@ export default function ProductOverview() {
 
                     <div className="lg:col-span-6 flex flex-col justify-center">
                         <div className="mb-6">
-                            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4">
-                                <span className="px-2.5 py-1 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-400 text-[10px] font-bold uppercase tracking-widest">
-                                    {product.brand || "Premium"}
-                                </span>
-                                {product.stock > 0 ? (
-                                    <span className="px-2.5 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span> In Stock
+                            {/* Desktop Header (Hidden on mobile) */}
+                            <div className="hidden lg:block">
+                                <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4">
+                                    <span className="px-2.5 py-1 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-400 text-[10px] font-bold uppercase tracking-widest">
+                                        {product.brand || "Premium"}
                                     </span>
-                                ) : (
-                                    <span className="px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-bold uppercase tracking-widest">
-                                        Out of Stock
-                                    </span>
-                                )}
-                            </div>
+                                    {product.stock > 0 ? (
+                                        <span className="px-2.5 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span> In Stock
+                                        </span>
+                                    ) : (
+                                        <span className="px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-bold uppercase tracking-widest">
+                                            Out of Stock
+                                        </span>
+                                    )}
+                                </div>
 
-                            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headings text-white mb-4 leading-tight">
-                                {product.name}
-                            </h1>
+                                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headings text-white mb-4 leading-tight">
+                                    {product.name}
+                                </h1>
+                            </div>
 
                             <div className="flex flex-wrap items-end gap-3 mb-6">
                                 <div className="flex flex-col">

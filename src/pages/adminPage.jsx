@@ -4,14 +4,36 @@ import { BsBoxes } from "react-icons/bs";
 import { LuUsersRound } from "react-icons/lu";
 import { MdOutlineRateReview } from "react-icons/md";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import AdminProductsPage from "./admin/adminProductsPage";
 import AdminAddProductsPage from "./admin/adminAddProductPage";
 import AdminUpdateProductPage from "./admin/adminUpdateProductPage";
 import AdminOrders from "./admin/adminOrders";
 
 export default function AdminPage() {
+  const [user, setUser] = useState(null);
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.href = "/";
+      return;
+    }
+    axios.get(import.meta.env.VITE_BACKEND_URL + "/users", {
+      headers: { Authorization: "Bearer " + token },
+    }).then((response) => {
+      if (response.data.role !== "admin") {
+        window.location.href = "/";
+      } else {
+        setUser(response.data);
+      }
+    }).catch((error) => {
+      console.error("Error verifying admin status:", error);
+      window.location.href = "/";
+    });
+  }, []);
 
   const isActive = (path) => {
     if (path === "/admin") return location.pathname === "/admin";
@@ -28,6 +50,17 @@ export default function AdminPage() {
     { path: "/admin/users", label: "Users", icon: LuUsersRound },
     { path: "/admin/reviews", label: "Reviews", icon: MdOutlineRateReview },
   ];
+
+  if (!user) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center bg-black text-white">
+        <div className="flex flex-col items-center">
+          <div className="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <div className="text-xl font-bold font-headings">Verifying Access...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-screen flex bg-black overflow-hidden relative">
@@ -73,10 +106,10 @@ export default function AdminPage() {
 
         <div className="p-4 border-t border-white/5">
           <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary-600 to-primary-400 flex items-center justify-center text-white font-bold">A</div>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary-600 to-primary-400 flex items-center justify-center text-white font-bold">{user.firstName ? user.firstName.charAt(0).toUpperCase() : "A"}</div>
             <div className="flex flex-col flex-1 min-w-0">
-              <span className="text-sm font-bold text-white truncate">Admin User</span>
-              <span className="text-xs text-gray-500 truncate">Super Admin</span>
+              <span className="text-sm font-bold text-white truncate">{user.firstName || "Admin"}</span>
+              <span className="text-xs text-gray-500 truncate">{user.email || "Super Admin"}</span>
             </div>
           </div>
         </div>
