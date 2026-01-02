@@ -39,9 +39,6 @@ export default function Header() {
                         <img src="/logo.png" alt="Logo" className="h-[40px] sm:h-[45px] object-contain" />
                         <div className="flex flex-col">
                             <span className="text-xl sm:text-2xl font-bold text-white font-headings tracking-wider leading-tight">ICM</span>
-                            <span className="text-[9px] sm:text-[10px] text-gray-500 font-medium -mt-1 uppercase tracking-widest">
-                                {new Date().getHours() < 12 ? "Good Morning" : new Date().getHours() < 18 ? "Good Afternoon" : "Good Evening"}
-                            </span>
                         </div>
                     </Link>
 
