@@ -49,12 +49,10 @@ export default function LoginPage() {
   async function handleGoogleLogin(googleData) {
     setGoogleLogin(true);
     try {
-      // If using useGoogleLogin (implicit flow), we get an access_token in googleData
-      // We'll send this to the backend. The backend needs to verify it with Google accordingly.
       const res = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/users/google-login",
         {
-          token: googleData.access_token // Changed from 'credential' to 'access_token' for custom button flow
+          token: googleData.access_token
         }
       );
       if (res?.data?.token) {

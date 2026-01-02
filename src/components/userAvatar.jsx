@@ -4,24 +4,8 @@ import { HiOutlineUserCircle } from "react-icons/hi";
 export default function UserAvatar({ user, className = "w-10 h-10" }) {
     const [hasError, setHasError] = useState(false);
 
-    // Debugging: Check what the component is receiving
-    useEffect(() => {
-        if (user?.email) {
-            console.log(`Avatar Data for ${user.email}:`, {
-                profileImage: user.profileImage,
-                image: user.image,
-                picture: user.picture,
-                photo: user.photo,
-                avatar: user.avatar,
-                img: user.img,
-                profilePic: user.profilePic
-            });
-        }
-    }, [user]);
-
     const imageUrl = user?.profileImage || user?.image || user?.picture || user?.photo || user?.avatar || user?.img || user?.profilePic;
 
-    // Strict check for "undefined" string or empty/null
     const isValidImage = imageUrl && imageUrl !== "undefined" && imageUrl !== "null" && imageUrl !== "";
 
     if (!isValidImage || hasError) {

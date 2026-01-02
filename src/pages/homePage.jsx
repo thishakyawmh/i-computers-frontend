@@ -25,7 +25,7 @@ export default function HomePage() {
                                 <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-primary-900/10 rounded-full blur-[150px] animate-pulse delay-700"></div>
 
                                 <div className="relative z-10 w-full max-w-[1200px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-16">
-                                    <div className="flex flex-col items-start text-left order-2 lg:order-1">
+                                    <div className="flex flex-col items-start text-left order-1 lg:order-1">
                                         <div className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-white/5 border border-white/10 text-primary-400 text-xs sm:text-sm font-bold tracking-widest mb-6 backdrop-blur-md uppercase">
                                             {new Date().getHours() < 18 ? <HiOutlineSun className="text-lg" /> : <HiOutlineMoon className="text-lg" />}
                                             {new Date().getHours() < 12 ? "Good Morning" : new Date().getHours() < 18 ? "Good Afternoon" : "Good Evening"}
@@ -37,10 +37,27 @@ export default function HomePage() {
                                         <p className="text-gray-400 text-base sm:text-lg md:text-xl max-w-lg mb-10 font-light leading-relaxed">
                                             From extreme gaming rigs to professional workstations and premium accessories, i Computers delivers the hardware that defines performance.
                                         </p>
-                                        <div className="flex flex-wrap items-center gap-5">
+
+                                        <div className="relative w-full lg:hidden my-8 group">
+                                            <div className="relative w-full max-w-[400px] mx-auto">
+                                                <img
+                                                    src="/home.png"
+                                                    alt="High-end PC setup"
+                                                    className="w-full h-auto object-contain scale-[1.05] group-hover:scale-110 transition-transform duration-1000"
+                                                />
+                                                <div className="absolute bottom-6 right-6 bg-primary-600/90 backdrop-blur-md p-3 rounded-xl animate-bounce-slow shadow-2xl shadow-primary-500/20">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-white font-black text-lg">RTX</span>
+                                                        <span className="text-white/80 text-[10px] uppercase font-bold tracking-tighter leading-none">Gaming<br />Ready</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 w-full">
                                             <Link
                                                 to="/products"
-                                                className="px-8 py-4 bg-primary-600 hover:bg-primary-500 text-white font-bold rounded-2xl transition-all duration-500 shadow-glow hover:shadow-glow-lg flex items-center gap-3 group uppercase tracking-widest text-xs"
+                                                className="w-full sm:w-auto px-8 py-4 bg-primary-600 hover:bg-primary-500 text-white font-bold rounded-2xl transition-all duration-500 shadow-glow hover:shadow-glow-lg flex items-center justify-center gap-3 group uppercase tracking-widest text-xs"
                                             >
                                                 Explore Products
                                                 <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,36 +66,36 @@ export default function HomePage() {
                                             </Link>
                                             <Link
                                                 to="/about"
-                                                className="px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold rounded-2xl transition-all duration-300 backdrop-blur-md uppercase tracking-widest text-xs"
+                                                className="w-full sm:w-auto px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold rounded-2xl transition-all duration-300 backdrop-blur-md uppercase tracking-widest text-xs flex justify-center"
                                             >
                                                 Our Story
                                             </Link>
                                         </div>
 
-                                        <div className="mt-12 grid grid-cols-2 sm:flex sm:items-center gap-6 sm:gap-12 border-t border-white/5 pt-8">
-                                            <div>
+                                        <div className="mt-12 grid grid-cols-2 lg:flex lg:items-center gap-y-8 gap-x-4 sm:gap-12 border-t border-white/5 pt-8 w-full justify-items-center">
+                                            <div className="text-center lg:text-left">
                                                 <div className="text-2xl font-bold text-white">1,200+</div>
                                                 <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Total Accessories</div>
                                             </div>
-                                            <div>
+                                            <div className="text-center lg:text-left">
                                                 <div className="text-2xl font-bold text-white">5,000+</div>
                                                 <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Total Sales</div>
                                             </div>
-                                            <div>
+                                            <div className="text-center lg:text-left">
                                                 <div className="text-2xl font-bold text-white">3,500+</div>
                                                 <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Trusted Customers</div>
                                             </div>
-                                            <div>
+                                            <div className="text-center lg:text-left">
                                                 <div className="text-2xl font-bold text-white">10+</div>
                                                 <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Years Experience</div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="relative order-1 lg:order-2 group flex justify-center lg:justify-end">
+                                    <div className="relative hidden lg:flex order-2 group justify-end">
                                         <div className="relative w-full max-w-[500px]">
                                             <img
-                                                src="/public/home.png"
+                                                src="/home.png"
                                                 alt="High-end PC setup"
                                                 className="w-full h-auto object-contain scale-[1.05] group-hover:scale-110 transition-transform duration-1000"
                                             />
@@ -94,12 +111,12 @@ export default function HomePage() {
                             </div>
 
                             <section className="max-w-[1200px] mx-auto px-6 py-24">
-                                <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-                                    <div>
+                                <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 gap-8 text-center md:text-left">
+                                    <div className="w-full md:w-auto">
                                         <h2 className="text-3xl sm:text-4xl font-bold font-headings text-white mb-4">Shop by <span className="text-primary-500">Category</span></h2>
-                                        <p className="text-gray-500 max-w-md">Browse our curated selection of high-performance hardware and premium peripherals.</p>
+                                        <p className="text-gray-500 max-w-md mx-auto md:ml-0">Browse our curated selection of high-performance hardware and premium peripherals.</p>
                                     </div>
-                                    <Link to="/products" className="text-primary-400 hover:text-white transition-colors flex items-center gap-2 font-bold uppercase tracking-widest text-xs">
+                                    <Link to="/products" className="text-primary-400 hover:text-white transition-colors flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs mx-auto md:mr-0">
                                         View All Products <HiOutlineArrowRight />
                                     </Link>
                                 </div>
@@ -110,6 +127,11 @@ export default function HomePage() {
                                         { name: "Keyboards", icon: FaKeyboard, color: "bg-purple-500/10 text-purple-400" },
                                         { name: "Audio Gear", icon: BiHeadphone, color: "bg-amber-500/10 text-amber-400" }
                                     ].map((cat, i) => (
+                                        <div key={i} className="group bg-surface border border-white/5 hover:border-primary-500/20 p-8 rounded-[32px] transition-all duration-500 flex flex-col items-center text-center">
+                                            <div className={`${cat.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-3xl group-hover:scale-110 transition-transform`}>
+                                                <cat.icon />
+                                            </div>
+                                            <span className="text-white font-bold group-hover:text-primary-400 transition-colors uppercase tracking-widest text-xs">{cat.name}</span>
                                         <div key={i} className="group bg-surface border border-white/5 p-8 rounded-[32px] transition-all duration-500 flex flex-col items-center text-center">
                                             <div className={`${cat.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-3xl transition-transform`}>
                                                 <cat.icon />
@@ -122,6 +144,14 @@ export default function HomePage() {
 
                             <div className="bg-white/[0.02] border-y border-white/5 py-24">
                                 <div className="max-w-[1200px] mx-auto px-6">
+                                    <div className="text-center mb-16">
+                                        <h2 className="text-3xl md:text-5xl font-bold font-headings text-white mb-6">
+                                            Why you <span className="text-primary-500">choose Us?</span>
+                                        </h2>
+                                        <p className="text-gray-500 max-w-2xl mx-auto text-sm sm:text-lg leading-relaxed">
+                                            We don't just sell components; we deliver high-performance solutions backed by expert engineering and dedicated 24/7 support.
+                                        </p>
+                                    </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                                         {[
                                             {
@@ -232,6 +262,6 @@ export default function HomePage() {
                     } />
                 </Routes>
             </main>
-        </div>
+        </div >
     );
 }

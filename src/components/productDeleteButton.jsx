@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { HiOutlineTrash } from "react-icons/hi2";
 
 export default function ProductDeleteButton(props) {
   const productID = props.productID;
@@ -45,9 +46,10 @@ export default function ProductDeleteButton(props) {
         onClick={() => {
           setIsMessageOpen(true);
         }}
-        className="w-20 bg-red-600 text-white font-semibold py-1 rounded-lg hover:bg-red-700 transition duration-200 cursor-pointer"
+        className="text-red-500 hover:text-red-500 transition-colors p-2 hover:bg-red-500/10 rounded-xl border border-transparent hover:border-red-500/10"
+        title="Delete Product"
       >
-        Delete
+        <HiOutlineTrash className="w-4 h-4 sm:w-5 sm:h-5" />
       </button>
       {isMessageOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">

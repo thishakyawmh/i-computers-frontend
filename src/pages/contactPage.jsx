@@ -5,7 +5,7 @@ export default function ContactPage() {
         <div className="w-full pt-32 pb-20">
             <section className="max-w-[1200px] mx-auto px-6">
                 <div className="text-center mb-20">
-                    <h1 className="text-5xl md:text-7xl font-bold font-headings text-white mb-8 transition-all">
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-headings text-white mb-8 transition-all">
                         Get in <span className="text-primary-500">Touch</span>
                     </h1>
                     <p className="text-gray-400 text-xl font-light max-w-2xl mx-auto">
