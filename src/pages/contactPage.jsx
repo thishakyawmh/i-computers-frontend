@@ -30,7 +30,7 @@ export default function ContactPage() {
                             },
                             {
                                 title: "Visit Store",
-                                value: "No. 12, Galle Road, Colombo 03",
+                                value: "No. 12, Kandy Road, Colombo 03",
                                 sub: "Free parking available",
                                 icon: HiOutlineMapPin
                             }

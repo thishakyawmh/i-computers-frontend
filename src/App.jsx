@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
-import Test from './components/test'
 import LoginPage from './pages/loginPage'
 import HomePage from './pages/homePage'
 import RegisterPage from './pages/registerPage'
@@ -46,7 +45,6 @@ function App() {
         <div className="w-full h-screen bg-primary text-secondary">
 
           <Routes path='/'>
-            <Route path='/test' element={<Test />} />
             <Route path='/*' element={<HomePage />} />
             <Route path='/login' element={<LoginPage />} />
             <Route path='/register' element={<RegisterPage />} />
