@@ -110,12 +110,12 @@ export default function HomePage() {
                                         { name: "Keyboards", icon: FaKeyboard, color: "bg-purple-500/10 text-purple-400" },
                                         { name: "Audio Gear", icon: BiHeadphone, color: "bg-amber-500/10 text-amber-400" }
                                     ].map((cat, i) => (
-                                        <Link key={i} to="/products" className="group bg-surface border border-white/5 hover:border-primary-500/50 p-8 rounded-[32px] transition-all duration-500 flex flex-col items-center text-center hover:-translate-y-2">
-                                            <div className={`${cat.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-3xl group-hover:scale-110 transition-transform`}>
+                                        <div key={i} className="group bg-surface border border-white/5 p-8 rounded-[32px] transition-all duration-500 flex flex-col items-center text-center">
+                                            <div className={`${cat.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-3xl transition-transform`}>
                                                 <cat.icon />
                                             </div>
-                                            <span className="text-white font-bold group-hover:text-primary-400 transition-colors">{cat.name}</span>
-                                        </Link>
+                                            <span className="text-white font-bold transition-colors">{cat.name}</span>
+                                        </div>
                                     ))}
                                 </div>
                             </section>
@@ -166,7 +166,7 @@ export default function HomePage() {
                                     <p className="text-gray-400 text-lg md:text-xl max-w-2xl mb-12 font-light">
                                         Tell our experts your budget and performance requirements, and we'll craft the perfect machine for you.
                                     </p>
-                                    <Link to="/about" className="px-12 py-5 bg-white text-black hover:bg-primary-500 hover:text-white font-bold rounded-2xl transition-all duration-500 shadow-2xl flex items-center gap-3 uppercase tracking-widest text-sm">
+                                    <Link to="/contact" className="px-12 py-5 bg-white text-black hover:bg-primary-500 hover:text-white font-bold rounded-2xl transition-all duration-500 shadow-2xl flex items-center gap-3 uppercase tracking-widest text-sm">
                                         Start Custom Build <HiOutlineArrowRight className="text-xl" />
                                     </Link>
                                 </div>
