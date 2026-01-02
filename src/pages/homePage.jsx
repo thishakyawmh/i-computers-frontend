@@ -132,11 +132,6 @@ export default function HomePage() {
                                                 <cat.icon />
                                             </div>
                                             <span className="text-white font-bold group-hover:text-primary-400 transition-colors uppercase tracking-widest text-xs">{cat.name}</span>
-                                        <div key={i} className="group bg-surface border border-white/5 p-8 rounded-[32px] transition-all duration-500 flex flex-col items-center text-center">
-                                            <div className={`${cat.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-3xl transition-transform`}>
-                                                <cat.icon />
-                                            </div>
-                                            <span className="text-white font-bold transition-colors">{cat.name}</span>
                                         </div>
                                     ))}
                                 </div>
