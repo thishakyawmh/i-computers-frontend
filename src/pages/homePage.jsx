@@ -5,6 +5,8 @@ import ProductOverview from "./productOverview";
 import Cart from "./cart";
 import Checkout from "./checkout";
 import OrdersPage from "./ordersPage";
+import AboutPage from "./aboutPage";
+import ContactPage from "./contactPage";
 import { HiOutlineSun, HiOutlineMoon } from "react-icons/hi";
 import { HiOutlineComputerDesktop, HiOutlineCpuChip, HiOutlineGift, HiOutlineArrowRight } from "react-icons/hi2";
 import { BiMouseAlt, BiHeadphone } from "react-icons/bi";
@@ -80,7 +82,6 @@ export default function HomePage() {
                                                 alt="High-end PC setup"
                                                 className="w-full h-auto object-contain scale-[1.05] group-hover:scale-110 transition-transform duration-1000"
                                             />
-                                            {/* Minimal Floating Badge - Optional, keeping it floating but clean */}
                                             <div className="absolute bottom-6 right-6 bg-primary-600/90 backdrop-blur-md p-3 rounded-xl hidden md:block animate-bounce-slow shadow-2xl shadow-primary-500/20">
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-white font-black text-lg">RTX</span>
@@ -92,7 +93,6 @@ export default function HomePage() {
                                 </div>
                             </div>
 
-                            {/* Category Grid Section */}
                             <section className="max-w-[1200px] mx-auto px-6 py-24">
                                 <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                                     <div>
@@ -110,17 +110,16 @@ export default function HomePage() {
                                         { name: "Keyboards", icon: FaKeyboard, color: "bg-purple-500/10 text-purple-400" },
                                         { name: "Audio Gear", icon: BiHeadphone, color: "bg-amber-500/10 text-amber-400" }
                                     ].map((cat, i) => (
-                                        <Link key={i} to="/products" className="group bg-surface border border-white/5 hover:border-primary-500/50 p-8 rounded-[32px] transition-all duration-500 flex flex-col items-center text-center hover:-translate-y-2">
-                                            <div className={`${cat.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-3xl group-hover:scale-110 transition-transform`}>
+                                        <div key={i} className="group bg-surface border border-white/5 p-8 rounded-[32px] transition-all duration-500 flex flex-col items-center text-center">
+                                            <div className={`${cat.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 text-3xl transition-transform`}>
                                                 <cat.icon />
                                             </div>
-                                            <span className="text-white font-bold group-hover:text-primary-400 transition-colors">{cat.name}</span>
-                                        </Link>
+                                            <span className="text-white font-bold transition-colors">{cat.name}</span>
+                                        </div>
                                     ))}
                                 </div>
                             </section>
 
-                            {/* Enhanced Feature Section */}
                             <div className="bg-white/[0.02] border-y border-white/5 py-24">
                                 <div className="max-w-[1200px] mx-auto px-6">
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -158,7 +157,6 @@ export default function HomePage() {
                                 </div>
                             </div>
 
-                            {/* Call to Build Section */}
                             <section className="max-w-[1200px] mx-auto px-6 py-24">
                                 <div className="relative w-full rounded-[48px] overflow-hidden bg-gradient-to-br from-primary-900/40 via-black to-black border border-white/10 p-12 md:p-20 flex flex-col items-center text-center">
                                     <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
@@ -168,13 +166,12 @@ export default function HomePage() {
                                     <p className="text-gray-400 text-lg md:text-xl max-w-2xl mb-12 font-light">
                                         Tell our experts your budget and performance requirements, and we'll craft the perfect machine for you.
                                     </p>
-                                    <Link to="/about" className="px-12 py-5 bg-white text-black hover:bg-primary-500 hover:text-white font-bold rounded-2xl transition-all duration-500 shadow-2xl flex items-center gap-3 uppercase tracking-widest text-sm">
+                                    <Link to="/contact" className="px-12 py-5 bg-white text-black hover:bg-primary-500 hover:text-white font-bold rounded-2xl transition-all duration-500 shadow-2xl flex items-center gap-3 uppercase tracking-widest text-sm">
                                         Start Custom Build <HiOutlineArrowRight className="text-xl" />
                                     </Link>
                                 </div>
                             </section>
 
-                            {/* Footer Section */}
                             <footer className="bg-surface border-t border-white/5 pt-24 pb-12">
                                 <div className="max-w-[1200px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
                                     <div className="flex flex-col gap-6">
@@ -221,16 +218,8 @@ export default function HomePage() {
                         </div>
                     } />
                     <Route path="/products" element={<ProductPage />} />
-                    <Route path="/about" element={
-                        <div className="w-full max-w-[1200px] mx-auto px-6 py-20">
-                            <h1 className="text-3xl sm:text-4xl font-bold font-headings text-white mb-4">About <span className="text-primary-500">Us</span></h1>
-                        </div>
-                    } />
-                    <Route path="/contact" element={
-                        <div className="w-full max-w-[1200px] mx-auto px-6 py-20">
-                            <h1 className="text-3xl sm:text-4xl font-bold font-headings text-white mb-4">Contact <span className="text-primary-500">Us</span></h1>
-                        </div>
-                    } />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
                     <Route path="/overview/:id" element={<ProductOverview />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/checkout" element={<Checkout />} />

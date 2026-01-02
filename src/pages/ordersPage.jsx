@@ -55,7 +55,6 @@ export default function OrdersPage() {
 
     return (
         <div className="w-full min-h-screen bg-black pt-20 pb-12 px-6 relative overflow-hidden">
-            {/* Background Effects */}
             <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary-900/10 rounded-full blur-[100px] pointer-events-none"></div>
             <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-primary-600/5 rounded-full blur-[80px] pointer-events-none"></div>
 
