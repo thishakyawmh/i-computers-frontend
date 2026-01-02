@@ -102,7 +102,6 @@ export default function LoginPage() {
           <div className="bg-surface border border-white/10 p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl backdrop-blur-xl relative">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary-500 to-transparent opacity-50"></div>
 
-            {/* Show loading overlay if google login is processing */}
             {googleLogin && (
               <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex flex-col items-center justify-center rounded-3xl">
                 <div className="w-10 h-10 border-4 border-primary-500/30 border-t-primary-500 rounded-full animate-spin mb-4"></div>
