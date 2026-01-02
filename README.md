@@ -1,3 +1,11 @@
+Demo Admin credentials:
+ email : icmadmin@gmail.com
+ password : admin@123
+
+Demo User credentials:
+ email : icmuser@gmail.com
+ password: user@123
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
