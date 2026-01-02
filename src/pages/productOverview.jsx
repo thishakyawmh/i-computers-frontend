@@ -95,7 +95,6 @@ export default function ProductOverview() {
             </div>
 
             <div className="relative z-10 max-w-[1200px] mx-auto px-6 py-8 sm:py-12">
-                {/* Mobile Header (Visible only on small screens) */}
                 <div className="block lg:hidden mb-6">
                     <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
                         <span className="px-2.5 py-1 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-400 text-[10px] font-bold uppercase tracking-widest">
@@ -145,7 +144,6 @@ export default function ProductOverview() {
 
                     <div className="lg:col-span-6 flex flex-col justify-center">
                         <div className="mb-6">
-                            {/* Desktop Header (Hidden on mobile) */}
                             <div className="hidden lg:block">
                                 <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4">
                                     <span className="px-2.5 py-1 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-400 text-[10px] font-bold uppercase tracking-widest">
