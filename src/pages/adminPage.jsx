@@ -1,5 +1,5 @@
-import { Link, Route, Routes, useLocation } from "react-router-dom";
-import { HiOutlineClipboardList, HiMenuAlt2, HiX } from "react-icons/hi";
+import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { HiOutlineClipboardList, HiMenuAlt2, HiX, HiOutlineUserCircle } from "react-icons/hi";
 import { BsBoxes } from "react-icons/bs";
 import { LuUsersRound } from "react-icons/lu";
 import { MdOutlineRateReview } from "react-icons/md";
@@ -9,11 +9,19 @@ import AdminProductsPage from "./admin/adminProductsPage";
 import AdminAddProductsPage from "./admin/adminAddProductPage";
 import AdminUpdateProductPage from "./admin/adminUpdateProductPage";
 import AdminOrders from "./admin/adminOrders";
+import AdminUsersPage from "./admin/adminUsersPage";
+import UserAvatar from "../components/userAvatar";
 
 export default function AdminPage() {
   const [user, setUser] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -71,13 +79,15 @@ export default function AdminPage() {
 
       <aside className={`fixed lg:static inset-y-0 left-0 w-[240px] h-full bg-surface border-r border-white/10 flex flex-col z-40 transition-transform duration-300 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}>
         <div className="w-full h-[100px] flex items-center px-6 border-b border-white/5 gap-3">
-          <img src="/logo.png" alt="Logo" className="h-10 sm:h-12 object-contain" />
-          <div className="flex flex-col">
-            <span className="text-xl sm:text-2xl font-bold text-white font-headings tracking-wider leading-tight">ICM</span>
-            <span className="text-[10px] font-bold text-primary-400 tracking-[0.1em] uppercase">
-              {new Date().getHours() < 12 ? "Good Morning" : new Date().getHours() < 18 ? "Good Afternoon" : "Good Evening"}
-            </span>
-          </div>
+          <Link to="/" className="flex items-center gap-3 group/logo">
+            <img src="/logo.png" alt="Logo" className="h-10 sm:h-12 object-contain group-hover/logo:scale-110 transition-transform" />
+            <div className="flex flex-col">
+              <span className="text-xl sm:text-2xl font-bold text-white font-headings tracking-wider leading-tight">ICM</span>
+              <span className="text-[10px] font-bold text-primary-400 uppercase bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full border border-amber-200">
+                Admin
+              </span>
+            </div>
+          </Link>
           <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden ml-auto p-2 text-gray-500 hover:text-white">
             <HiX className="text-xl" />
           </button>
@@ -105,12 +115,21 @@ export default function AdminPage() {
         </nav>
 
         <div className="p-4 border-t border-white/5">
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary-600 to-primary-400 flex items-center justify-center text-white font-bold">{user.firstName ? user.firstName.charAt(0).toUpperCase() : "A"}</div>
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 group/profile">
+            <UserAvatar user={user} />
             <div className="flex flex-col flex-1 min-w-0">
               <span className="text-sm font-bold text-white truncate">{user.firstName || "Admin"}</span>
               <span className="text-xs text-gray-500 truncate">{user.email || "Super Admin"}</span>
             </div>
+            <button
+              onClick={handleLogout}
+              className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+              title="Sign Out"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </button>
           </div>
         </div>
       </aside>
@@ -131,14 +150,7 @@ export default function AdminPage() {
             <Route path="/products" element={<AdminProductsPage />} />
             <Route path="/add-product" element={<AdminAddProductsPage />} />
             <Route path="/update-product" element={<AdminUpdateProductPage />} />
-            <Route
-              path="/users"
-              element={
-                <h1 className="text-2xl sm:text-3xl font-bold font-headings text-white mb-6">
-                  User Management
-                </h1>
-              }
-            />
+            <Route path="/users" element={<AdminUsersPage />} />
             <Route
               path="/reviews"
               element={

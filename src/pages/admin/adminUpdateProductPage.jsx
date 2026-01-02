@@ -9,7 +9,7 @@ export default function AdminUpdateProductPage() {
     const location = useLocation();
     const [productID, setProductID] = useState(location.state?.productID || "");
     const [name, setName] = useState(location.state?.name || "");
-    const [altnames, setAltNames] = useState(location.state?.altnames ? (Array.isArray(location.state.altnames) ? location.state.altnames.join(",") : location.state.altnames) : "");
+    const [altnames, setAltNames] = useState(location.state?.altName ? (Array.isArray(location.state.altName) ? location.state.altName.join(",") : location.state.altName) : "");
     const [description, setDescription] = useState(location.state?.description || "");
     const [price, setPrice] = useState(location.state?.price || "");
     const [labelledPrice, setLabelledPrice] = useState(location.state?.labelledPrice || "");
@@ -53,7 +53,7 @@ export default function AdminUpdateProductPage() {
                 {
                     productID: productID,
                     name: name,
-                    altnames: altNamesArray,
+                    altName: altNamesArray,
                     description: description,
                     price: price,
                     labelledPrice: labelledPrice,

@@ -88,7 +88,7 @@ export default function Header() {
                 </div>
 
                 <div className="relative z-10 flex flex-col h-full pt-[120px] px-8 gap-4">
-                    {["/", "/products", "/about", "/contact"].map((path) => (
+                    {["/", "/products", "/orders", "/about", "/contact"].map((path) => (
                         <Link
                             key={path}
                             to={path}

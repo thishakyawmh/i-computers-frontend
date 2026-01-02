@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { BiLogOut, BiPackage } from 'react-icons/bi';
+import { jwtDecode } from 'jwt-decode';
+import UserAvatar from './userAvatar';
 
 export default function UserData({ isMobileMenu = false }) {
     const [user, setUser] = useState(null);
@@ -12,6 +14,16 @@ export default function UserData({ isMobileMenu = false }) {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
+            try {
+                // Instantly set user info from the token payload
+                const decoded = jwtDecode(token);
+                setUser(decoded);
+                setIsLoaded(true);
+            } catch (error) {
+                console.error("Token decoding failed", error);
+            }
+
+            // Still fetch full user data from backend for consistency/updates
             axios.get(import.meta.env.VITE_BACKEND_URL + "/users", {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -56,12 +68,7 @@ export default function UserData({ isMobileMenu = false }) {
             return (
                 <div className="flex flex-col gap-4 w-full mt-4 p-4 rounded-2xl bg-white/5 border border-white/5">
                     <div className="flex items-center gap-4">
-                        <img
-                            src={user.profileImage || user.image || `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&background=random`}
-                            alt="avatar"
-                            className="w-12 h-12 rounded-full border border-white/10 object-cover"
-                            onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&background=random`; }}
-                        />
+                        <UserAvatar user={user} className="w-12 h-12" />
                         <div className="flex flex-col overflow-hidden">
                             <span className="text-white text-lg font-bold truncate">{user.firstName} {user.lastName}</span>
                             <span className="text-gray-500 text-xs truncate">{user.email}</span>
@@ -94,12 +101,7 @@ export default function UserData({ isMobileMenu = false }) {
                     className="flex items-center gap-3 cursor-pointer p-1 rounded-full hover:bg-white/5 transition-colors"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                    <img
-                        src={user.profileImage || user.image || `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&background=random`}
-                        alt="avatar"
-                        className="w-8 h-8 rounded-full border border-white/10 object-cover"
-                        onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&background=random`; }}
-                    />
+                    <UserAvatar user={user} className="w-8 h-8" />
                     <span className="text-white text-sm font-medium">{user.firstName}</span>
                 </div>
 

@@ -65,7 +65,7 @@ export default function AdminAddProductsPage() {
         {
           productID: productID,
           name: name,
-          altnames: altNamesInArray,
+          altName: altNamesInArray,
           description: description,
           price: price,
           labelledPrice: labelledPrice,

@@ -4,6 +4,7 @@ import ProductPage from "./productPage";
 import ProductOverview from "./productOverview";
 import Cart from "./cart";
 import Checkout from "./checkout";
+import OrdersPage from "./ordersPage";
 
 export default function HomePage() {
     return (
@@ -81,6 +82,7 @@ export default function HomePage() {
                     <Route path="/overview/:id" element={<ProductOverview />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/orders" element={<OrdersPage />} />
 
                     <Route path="*" element={
                         <div className="w-full py-40 text-center">

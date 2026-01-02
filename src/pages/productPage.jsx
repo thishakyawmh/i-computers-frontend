@@ -6,31 +6,53 @@ import ProductCard from "../components/productCard";
 export default function ProductPage() {
     const [products, setProducts] = useState([]);
     const [loaded, setLoaded] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         if (!loaded) {
-            axios
-                .get(import.meta.env.VITE_BACKEND_URL + "/products")
-                .then((response) => {
-                    console.log("Products fetched:", response.data);
-                    setProducts(response.data);
-                    setLoaded(true);
-                });
+            fetchAllProducts();
         }
     }, []);
 
+    const fetchAllProducts = () => {
+        axios
+            .get(import.meta.env.VITE_BACKEND_URL + "/products")
+            .then((response) => {
+                setProducts(response.data);
+                setLoaded(true);
+            });
+    };
+
+    const handleSearch = (query) => {
+        setSearchQuery(query);
+        if (query.trim() === "") {
+            fetchAllProducts();
+            return;
+        }
+
+        axios
+            .get(import.meta.env.VITE_BACKEND_URL + "/products/search/" + query)
+            .then((response) => {
+                setProducts(response.data);
+            })
+            .catch(err => {
+                console.error("Search error:", err);
+                setProducts([]);
+            });
+    };
+
     return (
         <div className="w-full min-h-[calc(100vh-80px)] bg-black">
-            <div className="relative w-full py-20 overflow-hidden border-b border-white/5">
+            <div className="relative w-full py-12 overflow-hidden border-b border-white/5">
                 <div className="absolute -top-20 right-0 w-[500px] h-[500px] bg-primary-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 
                 <div className="relative max-w-[1200px] mx-auto px-6 z-10">
-                    <span className="text-primary-400 font-medium tracking-widest text-sm uppercase mb-3 inline-block">Collection</span>
-                    <h1 className="text-4xl md:text-5xl font-bold font-headings text-white mb-4">
+                    <span className="text-primary-400 font-medium tracking-widest text-[10px] uppercase mb-2 inline-block">Collection</span>
+                    <h1 className="text-3xl md:text-4xl font-bold font-headings text-white mb-2">
                         Premium <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-primary-600">Products</span>
                     </h1>
-                    <p className="text-gray-400 text-lg max-w-xl font-light">
-                        Explore our curated selection of high-performance hardware and accessories enabled for the future.
+                    <p className="text-gray-400 text-sm max-w-xl font-light">
+                        Explore our curated selection of high-performance hardware enabled for the future.
                     </p>
                 </div>
             </div>
@@ -47,7 +69,19 @@ export default function ProductPage() {
                                 Showing <span className="text-white font-semibold">{products.length}</span> items
                             </p>
 
-                            <div className="flex gap-2">
+                            <div className="flex-1 max-w-sm relative group">
+                                <input
+                                    type="text"
+                                    placeholder="Search premium products..."
+                                    value={searchQuery}
+                                    onChange={(e) => handleSearch(e.target.value)}
+                                    className="w-full h-10 bg-white/5 border border-white/10 rounded-xl px-4 text-sm text-white outline-none focus:border-primary-500/50 transition-all placeholder:text-gray-600"
+                                />
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 group-hover:text-primary-500 transition-colors">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
                             </div>
                         </div>
 

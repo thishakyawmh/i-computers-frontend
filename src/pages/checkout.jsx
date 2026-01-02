@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { getCart } from "../utils/cart";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaArrowLeft, FaMoneyBillWave } from "react-icons/fa";
 import toast from "react-hot-toast";
 import axios from "axios";
 
 export default function Checkout() {
     const navigate = useNavigate();
+    const location = useLocation();
     const [cart, setCart] = useState([]);
     const [total, setTotal] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,6 +21,13 @@ export default function Checkout() {
     });
 
     useEffect(() => {
+        // Check if we have items passed via location state (Buy Now)
+        if (location.state?.items) {
+            setCart(location.state.items);
+            setTotal(location.state.total || location.state.items.reduce((acc, item) => acc + (item.price * item.quantity), 0));
+            return;
+        }
+
         const items = getCart();
         if (items.length === 0) {
             toast.error("Your cart is empty");
@@ -28,7 +36,7 @@ export default function Checkout() {
         }
         setCart(items);
         setTotal(items.reduce((acc, item) => acc + (item.price * item.quantity), 0));
-    }, [navigate]);
+    }, [navigate, location.state]);
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -57,8 +65,10 @@ export default function Checkout() {
         )
             .then(response => {
                 toast.success(response.data.message || "Order placed successfully!");
-                localStorage.removeItem("cart");
-                window.dispatchEvent(new Event("cartUpdated"));
+                if (!location.state?.items) {
+                    localStorage.removeItem("cart");
+                    window.dispatchEvent(new Event("cartUpdated"));
+                }
                 navigate("/products");
             })
             .catch(error => {

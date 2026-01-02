@@ -23,6 +23,7 @@ export default function ProductOverview() {
                     setStatus("error");
                     return;
                 }
+                console.log("Product data received:", response.data);
                 setProduct(response.data);
                 setStatus("success");
             })
@@ -113,6 +114,11 @@ export default function ProductOverview() {
                     <h1 className="text-2xl sm:text-3xl font-bold font-headings text-white leading-tight">
                         {product.name}
                     </h1>
+                    {product.altName && (
+                        <p className="text-gray-500 text-xs sm:text-sm font-medium mt-1 uppercase tracking-wide">
+                            {Array.isArray(product.altName) ? product.altName.join(" • ") : product.altName}
+                        </p>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
@@ -156,9 +162,14 @@ export default function ProductOverview() {
                                     )}
                                 </div>
 
-                                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headings text-white mb-4 leading-tight">
+                                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-headings text-white mb-2 leading-tight">
                                     {product.name}
                                 </h1>
+                                {product.altName && (
+                                    <p className="text-gray-500 text-sm font-medium mb-4 uppercase tracking-wider">
+                                        {Array.isArray(product.altName) ? product.altName.join(" • ") : product.altName}
+                                    </p>
+                                )}
                             </div>
 
                             <div className="flex flex-wrap items-end gap-3 mb-6">
@@ -230,6 +241,14 @@ export default function ProductOverview() {
                                 <span className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-wider block mb-0.5">Product ID</span>
                                 <span className="text-white font-mono text-[10px] sm:text-xs truncate block">{product.productID}</span>
                             </div>
+                            {(product.altName) && (
+                                <div className="bg-surface/50 border border-white/5 p-3 rounded-xl col-span-2">
+                                    <span className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-wider block mb-0.5">Known As</span>
+                                    <span className="text-primary-400 font-medium text-[10px] sm:text-xs truncate block uppercase tracking-wide">
+                                        {Array.isArray(product.altName) ? product.altName.join(", ") : product.altName}
+                                    </span>
+                                </div>
+                            )}
                             <div className="bg-surface/50 border border-white/5 p-3 rounded-xl">
                                 <span className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-wider block mb-0.5">Availability</span>
                                 <span className="text-white font-medium text-xs sm:text-sm">{product.stock} Units</span>
