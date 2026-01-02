@@ -15,7 +15,6 @@ export default function UserData({ isMobileMenu = false }) {
         const token = localStorage.getItem("token");
         if (token) {
             try {
-                // Instantly set user info from the token payload
                 const decoded = jwtDecode(token);
                 setUser(decoded);
                 setIsLoaded(true);
@@ -23,7 +22,6 @@ export default function UserData({ isMobileMenu = false }) {
                 console.error("Token decoding failed", error);
             }
 
-            // Still fetch full user data from backend for consistency/updates
             axios.get(import.meta.env.VITE_BACKEND_URL + "/users", {
                 headers: {
                     Authorization: `Bearer ${token}`

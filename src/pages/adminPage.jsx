@@ -10,6 +10,7 @@ import AdminAddProductsPage from "./admin/adminAddProductPage";
 import AdminUpdateProductPage from "./admin/adminUpdateProductPage";
 import AdminOrders from "./admin/adminOrders";
 import AdminUsersPage from "./admin/adminUsersPage";
+import AdminReviewsPage from "./admin/adminReviewsPage";
 import UserAvatar from "../components/userAvatar";
 
 export default function AdminPage() {
@@ -151,14 +152,7 @@ export default function AdminPage() {
             <Route path="/add-product" element={<AdminAddProductsPage />} />
             <Route path="/update-product" element={<AdminUpdateProductPage />} />
             <Route path="/users" element={<AdminUsersPage />} />
-            <Route
-              path="/reviews"
-              element={
-                <h1 className="text-2xl sm:text-3xl font-bold font-headings text-white mb-6">
-                  Review Management
-                </h1>
-              }
-            />
+            <Route path="/reviews" element={<AdminReviewsPage />} />
           </Routes>
         </div>
       </main>

@@ -1,10 +1,11 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Loaded from "../components/loaded";
 import ImageSlider from "../components/imageSlider";
 import { addToCart } from "../utils/cart";
+import { MdOutlineStar, MdStarBorder } from "react-icons/md";
 
 export default function ProductOverview() {
     const params = useParams();
@@ -12,6 +13,17 @@ export default function ProductOverview() {
     const [status, setStatus] = useState("loading");
     const [quantity, setQuantity] = useState(1);
     const navigate = useNavigate();
+
+    const [reviews, setReviews] = useState([]);
+    const [reviewLoading, setReviewLoading] = useState(false);
+    const [comment, setComment] = useState("");
+    const [rating, setRating] = useState(5);
+
+    const fetchReviews = () => {
+        axios.get(import.meta.env.VITE_BACKEND_URL + "/reviews/product/" + params.id)
+            .then(res => setReviews(res.data))
+            .catch(err => console.error("Error fetching reviews:", err));
+    };
 
     useEffect(() => {
         setStatus("loading");
@@ -23,9 +35,9 @@ export default function ProductOverview() {
                     setStatus("error");
                     return;
                 }
-                console.log("Product data received:", response.data);
                 setProduct(response.data);
                 setStatus("success");
+                fetchReviews();
             })
             .catch((error) => {
                 console.error("Error fetching product:", error);
@@ -33,6 +45,36 @@ export default function ProductOverview() {
                 setStatus("error");
             });
     }, [params.id]);
+
+    const handleReviewSubmit = async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem("token");
+        if (!token) {
+            toast.error("Please login to leave a review");
+            return;
+        }
+
+        try {
+            setReviewLoading(true);
+            await axios.post(import.meta.env.VITE_BACKEND_URL + "/reviews", {
+                productId: product.productID,
+                productName: product.name,
+                rating,
+                comment
+            }, {
+                headers: { Authorization: "Bearer " + token }
+            });
+            toast.success("Review submitted!");
+            setComment("");
+            setRating(5);
+            fetchReviews();
+        } catch (error) {
+            console.error("Error submitting review:", error);
+            toast.error(error.response?.data?.message || "Failed to submit review");
+        } finally {
+            setReviewLoading(false);
+        }
+    };
 
     const handleAddToCart = () => {
         const result = addToCart(product, quantity);
@@ -230,76 +272,114 @@ export default function ProductOverview() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                            <div className="bg-surface/50 border border-white/5 p-3 rounded-xl">
-                                <span className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-wider block mb-0.5">Model</span>
-                                <span className="text-white font-medium text-xs sm:text-sm truncate block">{product.model || "N/A"}</span>
-                            </div>
-                            <div className="bg-surface/50 border border-white/5 p-3 rounded-xl">
-                                <span className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-wider block mb-0.5">Product ID</span>
-                                <span className="text-white font-mono text-[10px] sm:text-xs truncate block">{product.productID}</span>
-                            </div>
-                            {(product.altName) && (
-                                <div className="bg-surface/50 border border-white/5 p-3 rounded-xl col-span-2">
-                                    <span className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-wider block mb-0.5">Known As</span>
-                                    <span className="text-primary-400 font-medium text-[10px] sm:text-xs truncate block uppercase tracking-wide">
-                                        {Array.isArray(product.altName) ? product.altName.join(", ") : product.altName}
-                                    </span>
-                                </div>
-                            )}
-                            <div className="bg-surface/50 border border-white/5 p-3 rounded-xl">
-                                <span className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-wider block mb-0.5">Availability</span>
-                                <span className="text-white font-medium text-xs sm:text-sm">{product.stock} Units</span>
-                            </div>
-                            <div className="bg-surface/50 border border-white/5 p-3 rounded-xl">
-                                <span className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-wider block mb-0.5">Shipping</span>
-                                <span className="text-green-400 font-medium text-[10px] sm:text-xs flex items-center gap-1">
-                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                                    Free Shipping
-                                </span>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
-                <div className="mt-12 sm:mt-20 border-t border-white/5 pt-8 sm:pt-12">
-                    <h2 className="text-xl sm:text-2xl font-bold font-headings text-white mb-6 sm:mb-8 flex items-center gap-3">
-                        <span className="w-6 sm:w-8 h-1 bg-primary-500 rounded-full"></span>
-                        Technical Specifications
-                    </h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-8 sm:mt-12">
+                    <div className="bg-surface/50 border border-white/5 p-5 rounded-2xl shadow-lg">
+                        <span className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider block mb-1 font-bold">Model</span>
+                        <span className="text-white font-bold text-sm sm:text-lg truncate block">{product.model || "N/A"}</span>
+                    </div>
+                    <div className="bg-surface/50 border border-white/5 p-5 rounded-2xl shadow-lg">
+                        <span className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider block mb-1 font-bold">Product ID</span>
+                        <span className="text-white font-mono text-sm sm:text-lg truncate block">{product.productID}</span>
+                    </div>
+                    <div className="bg-surface/50 border border-white/5 p-5 rounded-2xl shadow-lg">
+                        <span className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider block mb-1 font-bold">Availability</span>
+                        <span className="text-white font-bold text-sm sm:text-lg">{product.stock} Units</span>
+                    </div>
+                    <div className="bg-surface/50 border border-white/5 p-5 rounded-2xl shadow-lg">
+                        <span className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wider block mb-1 font-bold">Shipping Status</span>
+                        <span className="text-green-400 font-bold text-sm sm:text-lg flex items-center gap-2">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                            Free Shipping
+                        </span>
+                    </div>
+                </div>
 
-                    <div className="bg-surface rounded-2xl sm:rounded-3xl border border-white/10 overflow-hidden">
-                        <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/10 font-medium">
-                            <div className="p-6 sm:p-8 space-y-4 sm:space-y-6">
-                                <div className="flex justify-between items-center group text-sm sm:text-base">
-                                    <span className="text-gray-500 group-hover:text-primary-400 transition-colors">Manufacturer</span>
-                                    <span className="text-white text-right ml-4 font-bold">{product.brand || "Generic"}</span>
-                                </div>
-                                <div className="flex justify-between items-center group text-sm sm:text-base">
-                                    <span className="text-gray-500 group-hover:text-primary-400 transition-colors">Model Name</span>
-                                    <span className="text-white text-right ml-4 font-bold">{product.model || "Standard Edition"}</span>
-                                </div>
-                                <div className="flex justify-between items-center group text-sm sm:text-base">
-                                    <span className="text-gray-500 group-hover:text-primary-400 transition-colors">Category Group</span>
-                                    <span className="text-white text-right ml-4 font-bold">{product.category}</span>
-                                </div>
-                            </div>
 
-                            <div className="p-6 sm:p-8 space-y-4 sm:space-y-6">
-                                <div className="flex justify-between items-center group text-sm sm:text-base">
-                                    <span className="text-gray-500 group-hover:text-primary-400 transition-colors">Stock Status</span>
-                                    <span className={`font-bold text-right ml-4 ${product.stock > 0 ? "text-green-400" : "text-red-400"}`}>
-                                        {product.stock > 0 ? "Instantly Available" : "Unavailable"}
-                                    </span>
+                <div className="mt-12 sm:mt-20 border-t border-white/5 pt-12 sm:pt-20">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                        <div className="lg:col-span-5">
+                            <h2 className="text-2xl sm:text-3xl font-bold font-headings text-white mb-6">Customer Reviews</h2>
+
+                            {localStorage.getItem("token") ? (
+                                <form onSubmit={handleReviewSubmit} className="bg-surface border border-white/10 p-6 rounded-3xl shadow-xl">
+                                    <h3 className="text-white font-bold mb-4">Leave a Review</h3>
+                                    <div className="flex items-center gap-2 mb-4">
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <button
+                                                key={star}
+                                                type="button"
+                                                onClick={() => setRating(star)}
+                                                className="text-2xl transition-transform hover:scale-110"
+                                            >
+                                                {star <= rating ? (
+                                                    <MdOutlineStar className="text-amber-500" />
+                                                ) : (
+                                                    <MdStarBorder className="text-gray-600" />
+                                                )}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <textarea
+                                        value={comment}
+                                        onChange={(e) => setComment(e.target.value)}
+                                        placeholder="Share your experience with this product..."
+                                        required
+                                        className="w-full bg-black/40 border border-white/10 rounded-2xl px-5 py-4 text-white outline-none focus:border-primary-500/50 transition-colors resize-none mb-4 min-h-[120px]"
+                                    ></textarea>
+                                    <button
+                                        disabled={reviewLoading}
+                                        className="w-full py-4 bg-primary-600 hover:bg-primary-500 text-white font-bold rounded-2xl transition-all shadow-glow uppercase tracking-widest text-xs disabled:opacity-50"
+                                    >
+                                        {reviewLoading ? "Submitting..." : "Submit Review"}
+                                    </button>
+                                </form>
+                            ) : (
+                                <div className="bg-white/5 border border-white/5 p-8 rounded-3xl text-center">
+                                    <p className="text-gray-400 mb-6">Want to share your thoughts? Log in to leave a review.</p>
+                                    <Link to="/login" className="px-8 py-3 bg-white text-black font-bold rounded-xl hover:bg-primary-500 hover:text-white transition-all text-sm uppercase tracking-widest">
+                                        Login Now
+                                    </Link>
                                 </div>
-                                <div className="flex justify-between items-center group text-sm sm:text-base">
-                                    <span className="text-gray-500 group-hover:text-primary-400 transition-colors">Condition</span>
-                                    <span className="text-white text-right ml-4 font-bold">Brand New</span>
-                                </div>
-                                <div className="flex justify-between items-center group text-sm sm:text-base">
-                                    <span className="text-gray-500 group-hover:text-primary-400 transition-colors">Warranty</span>
-                                    <span className="text-white text-right ml-4 font-bold">1 Year Standard</span>
-                                </div>
+                            )}
+                        </div>
+
+                        <div className="lg:col-span-7">
+                            <div className="space-y-6">
+                                {reviews.length === 0 ? (
+                                    <div className="py-20 text-center border border-dashed border-white/10 rounded-3xl">
+                                        <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 opacity-30">
+                                            <MdOutlineStar className="text-2xl text-white" />
+                                        </div>
+                                        <p className="text-gray-500 italic">No reviews yet for this product. Be the first!</p>
+                                    </div>
+                                ) : (
+                                    reviews.map((r) => (
+                                        <div key={r._id} className="bg-surface/50 border border-white/5 p-6 rounded-2xl transition-all hover:border-white/10">
+                                            <div className="flex justify-between items-start mb-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-10 h-10 bg-primary-600/20 rounded-full flex items-center justify-center font-bold text-primary-400 uppercase">
+                                                        {r.username?.charAt(0) || "A"}
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="text-white font-bold text-sm">{r.username || "Anonymous User"}</h4>
+                                                        <div className="flex text-amber-500 gap-0.5">
+                                                            {[...Array(5)].map((_, i) => (
+                                                                i < r.rating ? <MdOutlineStar key={i} className="text-xs" /> : <MdStarBorder key={i} className="text-xs text-gray-700" />
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <span className="text-[10px] uppercase font-bold text-gray-600 tracking-wider">
+                                                    {new Date(r.date).toLocaleDateString()}
+                                                </span>
+                                            </div>
+                                            <p className="text-gray-400 text-sm leading-relaxed">"{r.comment}"</p>
+                                        </div>
+                                    ))
+                                )}
                             </div>
                         </div>
                     </div>

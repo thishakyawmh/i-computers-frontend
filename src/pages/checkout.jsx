@@ -21,7 +21,6 @@ export default function Checkout() {
     });
 
     useEffect(() => {
-        // Check if we have items passed via location state (Buy Now)
         if (location.state?.items) {
             setCart(location.state.items);
             setTotal(location.state.total || location.state.items.reduce((acc, item) => acc + (item.price * item.quantity), 0));

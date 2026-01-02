@@ -10,8 +10,6 @@ import Checkout from './pages/checkout'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import ForgotPasswordPage from './pages/forgotPasswordPage'
 
-// 373323418208-1npdm2o1d4taukdjqh1h4nnrc8tos46l.apps.googleusercontent.com
-
 function App() {
   return (
     <GoogleOAuthProvider clientId="373323418208-1npdm2o1d4taukdjqh1h4nnrc8tos46l.apps.googleusercontent.com">

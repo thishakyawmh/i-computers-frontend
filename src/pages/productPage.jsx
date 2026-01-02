@@ -64,12 +64,12 @@ export default function ProductPage() {
                     </div>
                 ) : (
                     <>
-                        <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
-                            <p className="text-gray-400">
+                        <div className="flex flex-col sm:flex-row items-center justify-between mb-8 pb-4 border-b border-white/5 gap-4">
+                            <p className="text-gray-400 text-sm sm:text-base">
                                 Showing <span className="text-white font-semibold">{products.length}</span> items
                             </p>
 
-                            <div className="flex-1 max-w-sm relative group">
+                            <div className="w-full sm:max-w-sm relative group">
                                 <input
                                     type="text"
                                     placeholder="Search premium products..."
