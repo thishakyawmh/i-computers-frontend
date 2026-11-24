@@ -1,0 +1,24 @@
+name: Frontend CI
+
+on:
+  pull_request:
+    branches: [main, master]
+  push:
+    branches: [main, master, "audit/**"]
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Report dependency advisories
+        run: |
+          npm audit --json > npm-audit.json || true
+          node -e 'const a=require("./npm-audit.json"); for (const [name,v] of Object.entries(a.vulnerabilities || {})) console.log(name + ": " + v.severity + " | range=" + v.range + " | fix=" + JSON.stringify(v.fixAvailable));'
+      - run: npm run lint
+      - run: npm run build

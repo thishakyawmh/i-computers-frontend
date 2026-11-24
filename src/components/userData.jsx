@@ -20,6 +20,8 @@ export default function UserData({ isMobileMenu = false }) {
                 setIsLoaded(true);
             } catch (error) {
                 console.error("Token decoding failed", error);
+                localStorage.removeItem("token");
+                setUser(null);
             }
 
             axios.get(import.meta.env.VITE_BACKEND_URL + "/users", {
@@ -33,6 +35,10 @@ export default function UserData({ isMobileMenu = false }) {
                 })
                 .catch((err) => {
                     console.error("Failed to fetch user data", err);
+                    if (err.response?.status === 401 || err.response?.status === 403) {
+                        localStorage.removeItem("token");
+                        setUser(null);
+                    }
                     setIsLoaded(true);
                 });
         } else {

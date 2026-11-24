@@ -22,9 +22,10 @@ export default function LoginPage() {
           password: password,
         }
       );
-      if (res?.data?.token) {
-        localStorage.setItem("token", res.data.token);
+      if (!res?.data?.token) {
+        throw new Error("The server did not return an authentication token");
       }
+      localStorage.setItem("token", res.data.token);
 
       if (res.data?.role === "admin") {
         navigate("/admin");
@@ -55,9 +56,10 @@ export default function LoginPage() {
           token: googleData.access_token
         }
       );
-      if (res?.data?.token) {
-        localStorage.setItem("token", res.data.token);
+      if (!res?.data?.token) {
+        throw new Error("Google authentication did not return a session token");
       }
+      localStorage.setItem("token", res.data.token);
 
       if (res.data?.role === "admin") {
         navigate("/admin");

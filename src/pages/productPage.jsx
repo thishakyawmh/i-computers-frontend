@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import Loaded from "../components/loaded";
 import ProductCard from "../components/productCard";
@@ -8,20 +8,21 @@ export default function ProductPage() {
     const [loaded, setLoaded] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
 
-    useEffect(() => {
-        if (!loaded) {
-            fetchAllProducts();
+    const fetchAllProducts = useCallback(async () => {
+        try {
+            const response = await axios.get(import.meta.env.VITE_BACKEND_URL + "/products");
+            setProducts(Array.isArray(response.data) ? response.data : []);
+        } catch (error) {
+            console.error("Error fetching products:", error);
+            setProducts([]);
+        } finally {
+            setLoaded(true);
         }
     }, []);
 
-    const fetchAllProducts = () => {
-        axios
-            .get(import.meta.env.VITE_BACKEND_URL + "/products")
-            .then((response) => {
-                setProducts(response.data);
-                setLoaded(true);
-            });
-    };
+    useEffect(() => {
+        fetchAllProducts();
+    }, [fetchAllProducts]);
 
     const handleSearch = (query) => {
         setSearchQuery(query);
@@ -31,7 +32,7 @@ export default function ProductPage() {
         }
 
         axios
-            .get(import.meta.env.VITE_BACKEND_URL + "/products/search/" + query)
+            .get(import.meta.env.VITE_BACKEND_URL + "/products/search/" + encodeURIComponent(query.trim()))
             .then((response) => {
                 setProducts(response.data);
             })

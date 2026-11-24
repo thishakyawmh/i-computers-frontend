@@ -1,24 +1,53 @@
-Demo Admin credentials:
- email : icmadmin@gmail.com
- password : admin@123
+# I-Computers Store Frontend
 
-Demo User credentials:
- email : icmuser@gmail.com
- password: user@123
+React 19 + Vite storefront for the I-Computers e-commerce application.
 
-# React + Vite
+## Requirements
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- Node.js 20+
+- npm
+- The I-Computers backend API
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Install dependencies:
 
-## React Compiler
+   ```bash
+   npm ci
+   ```
 
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. Copy `.env.example` to `.env.local`.
+3. Set:
+   - `VITE_BACKEND_URL` to the backend API base URL, including `/api`
+   - `VITE_GOOGLE_CLIENT_ID` to the Google OAuth web client ID used by the backend's Google login flow
+   - `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` for image uploads
 
-## Expanding the ESLint configuration
+   Vite variables are public and are embedded in the browser bundle. Never put private API secrets in variables prefixed with `VITE_`.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+4. Start the frontend:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Run quality checks:
+
+   ```bash
+   npm run lint
+   npm run build
+   ```
+
+## Authentication notes
+
+The frontend stores the JWT session token in browser local storage and sends it as a Bearer token to protected API routes. Browser storage is accessible to JavaScript, so keep dependencies updated, avoid unsafe HTML injection, and consider migrating to secure HttpOnly cookies if the backend is changed to support them.
+
+Admin pages perform a server-side user lookup before rendering. The backend remains the authority for admin permissions; client-side route checks are only user experience controls.
+
+## Deployment
+
+Configure the Vite environment variables in the hosting platform and rebuild the frontend after changes. Keep `.env.local` out of source control. Do not publish demo account passwords in the repository README; create demo users through a controlled seed process and rotate any credentials that have been exposed.
+
+
+## Image storage policy
+
+The Supabase anon key is a public browser key, not a private service-role key. Configure the `images` storage bucket with strict Storage RLS policies and file-size/MIME restrictions. Do not expose a Supabase service-role key through a `VITE_` variable. For production uploads, prefer a backend-issued signed upload URL or a server-side validation flow.

@@ -40,6 +40,9 @@ export default function AdminPage() {
       }
     }).catch((error) => {
       console.error("Error verifying admin status:", error);
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        localStorage.removeItem("token");
+      }
       window.location.href = "/";
     });
   }, []);

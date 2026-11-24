@@ -7,7 +7,7 @@ import uploadFile from "../../utils/mediaUpload";
 
 export default function AdminUpdateProductPage() {
     const location = useLocation();
-    const [productID, setProductID] = useState(location.state?.productID || "");
+    const productID = location.state?.productID || "";
     const [name, setName] = useState(location.state?.name || "");
     const [altnames, setAltNames] = useState(location.state?.altName ? (Array.isArray(location.state.altName) ? location.state.altName.join(",") : location.state.altName) : "");
     const [description, setDescription] = useState(location.state?.description || "");
@@ -159,7 +159,7 @@ export default function AdminUpdateProductPage() {
                             <label className="block text-sm font-medium text-gray-400 mb-2">Images</label>
 
                             <div className="flex gap-2 mb-3 overflow-x-auto pb-2">
-                                {(files.length > 0 ? Array.from(files).map((f, i) => URL.createObjectURL(f)) : (location.state?.images || [])).map((src, i) => (
+                                {(files.length > 0 ? Array.from(files).map((file) => URL.createObjectURL(file)) : (location.state?.images || [])).map((src, i) => (
                                     <div key={i} className="w-20 h-20 rounded-lg border border-white/10 overflow-hidden flex-shrink-0 relative group">
                                         <img src={src} className="w-full h-full object-cover" alt="" />
                                     </div>

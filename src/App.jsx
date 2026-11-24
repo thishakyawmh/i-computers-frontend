@@ -12,7 +12,7 @@ import ForgotPasswordPage from './pages/forgotPasswordPage'
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId="373323418208-1npdm2o1d4taukdjqh1h4nnrc8tos46l.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ''}>
       <BrowserRouter>
         <Toaster
           position='top-right'

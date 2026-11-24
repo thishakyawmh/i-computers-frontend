@@ -19,6 +19,11 @@ export default function RegisterPage() {
             return toast.error("Please fill in all fields");
         }
 
+        if (password.length < 12) {
+            setIsLoading(false);
+            return toast.error("Password must be at least 12 characters long");
+        }
+
         if (password !== confirmPassword) {
             setIsLoading(false);
             return toast.error("Passwords do not match");
