@@ -23,12 +23,12 @@ export default function ProductOverview() {
         axios.get(import.meta.env.VITE_BACKEND_URL + "/reviews/product/" + encodeURIComponent(params.id))
             .then(res => setReviews(res.data))
             .catch(err => console.error("Error fetching reviews:", err));
-    }, [params.id, fetchReviews]);
+    }, [params.id]);
 
     useEffect(() => {
         setStatus("loading");
         axios
-            .get(import.meta.env.VITE_BACKEND_URL + "/products/" + params.id)
+            .get(import.meta.env.VITE_BACKEND_URL + "/products/" + encodeURIComponent(params.id))
             .then((response) => {
                 if (!response.data) {
                     toast.error("Product not found");
@@ -44,7 +44,7 @@ export default function ProductOverview() {
                 toast.error("Error fetching product details");
                 setStatus("error");
             });
-    }, [params.id]);
+    }, [params.id, fetchReviews]);
 
     const handleReviewSubmit = async (e) => {
         e.preventDefault();
