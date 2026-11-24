@@ -1,5 +1,5 @@
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Loaded from "../components/loaded";
@@ -19,11 +19,11 @@ export default function ProductOverview() {
     const [comment, setComment] = useState("");
     const [rating, setRating] = useState(5);
 
-    const fetchReviews = () => {
-        axios.get(import.meta.env.VITE_BACKEND_URL + "/reviews/product/" + params.id)
+    const fetchReviews = useCallback(() => {
+        axios.get(import.meta.env.VITE_BACKEND_URL + "/reviews/product/" + encodeURIComponent(params.id))
             .then(res => setReviews(res.data))
             .catch(err => console.error("Error fetching reviews:", err));
-    };
+    }, [params.id, fetchReviews]);
 
     useEffect(() => {
         setStatus("loading");
