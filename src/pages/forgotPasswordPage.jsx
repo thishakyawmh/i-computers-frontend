@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
 
         setIsLoading(true);
         try {
-            await axios.get(import.meta.env.VITE_BACKEND_URL + "/users/send-otp/" + email);
+            await axios.get(import.meta.env.VITE_BACKEND_URL + "/users/send-otp/" + encodeURIComponent(email.trim()));
             toast.success("OTP sent to your email!");
             setStep(2);
         } catch (error) {
@@ -32,6 +32,14 @@ export default function ForgotPasswordPage() {
     async function handleResetPasswordUpdate() {
         if (!otpCode || !password || !confirmPassword) {
             return toast.error("Please fill in all fields");
+        }
+
+        if (!/^\d{6}$/.test(otpCode)) {
+            return toast.error("Enter the six-digit verification code");
+        }
+
+        if (password.length < 12) {
+            return toast.error("Password must be at least 12 characters long");
         }
 
         if (password !== confirmPassword) {
