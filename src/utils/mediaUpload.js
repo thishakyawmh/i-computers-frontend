@@ -1,29 +1,45 @@
-import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
-const url = "https://lpzpnohiqprnrbyodfqm.supabase.co";
-const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwenBub2hpcXBybnJieW9kZnFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2ODY3NzcsImV4cCI6MjA4MjI2Mjc3N30.85inejmyj5Rl9vs-XOJXdxEH-KL3HXraA5X9ZlOXdR0";
-const supabase = createClient(url, key)
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = supabaseUrl && supabaseAnonKey
+    ? createClient(supabaseUrl, supabaseAnonKey)
+    : null;
 
-export default function uploadFile(file) {
+const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
 
-    return new Promise((
-        resolve, reject) => {
-        const timestamp = Date.now();
-        const fileName = `${timestamp}-${file.name}`;
+export default async function uploadFile(file) {
+    if (!supabase) {
+        throw new Error("Supabase storage is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.");
+    }
 
-        supabase.storage.from("images").upload(fileName, file, {
+    if (!(file instanceof File) || !file.type.startsWith("image/")) {
+        throw new Error("Please select a valid image file.");
+    }
+
+    if (file.size <= 0 || file.size > MAX_IMAGE_SIZE_BYTES) {
+        throw new Error("Image files must be smaller than 5 MB.");
+    }
+
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(-100);
+    const fileName = `${crypto.randomUUID()}-${safeName}`;
+
+    const { error } = await supabase.storage
+        .from("images")
+        .upload(fileName, file, {
             cacheControl: "3600",
-            upsert: false
-        })
-            .then(
-                () => {
-                    const publicUrl = supabase.storage.from("images").getPublicUrl(fileName).data.publicUrl;
-                    resolve(publicUrl)
-                }).catch((error) => {
-                    reject(error)
-                })
+            upsert: false,
+            contentType: file.type
+        });
 
-    })
+    if (error) {
+        throw new Error(`Image upload failed: ${error.message}`);
+    }
 
+    const { data } = supabase.storage.from("images").getPublicUrl(fileName);
+    if (!data?.publicUrl) {
+        throw new Error("Supabase did not return a public image URL.");
+    }
+
+    return data.publicUrl;
 }
