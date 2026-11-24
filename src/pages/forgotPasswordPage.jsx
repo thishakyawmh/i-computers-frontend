@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
 
         setIsLoading(true);
         try {
-            await axios.get(import.meta.env.VITE_BACKEND_URL + "/users/send-otp/" + encodeURIComponent(email.trim()));
+            await axios.post(import.meta.env.VITE_BACKEND_URL + "/users/send-otp", { email: email.trim() });
             toast.success("OTP sent to your email!");
             setStep(2);
         } catch (error) {
