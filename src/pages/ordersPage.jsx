@@ -27,6 +27,11 @@ export default function OrdersPage() {
             })
             .catch((err) => {
                 console.error("Error fetching orders:", err);
+                if (err.response?.status === 401 || err.response?.status === 403) {
+                    localStorage.removeItem("token");
+                    window.location.href = "/login";
+                    return;
+                }
                 toast.error("Failed to load your orders");
                 setLoaded(true);
             });
