@@ -7,7 +7,7 @@ import uploadFile from "../../utils/mediaUpload";
 
 export default function AdminUpdateProductPage() {
     const location = useLocation();
-    const [productID, setProductID] = useState(location.state?.productID || "");
+    const productID = location.state?.productID || "";
     const [name, setName] = useState(location.state?.name || "");
     const [altnames, setAltNames] = useState(location.state?.altName ? (Array.isArray(location.state.altName) ? location.state.altName.join(",") : location.state.altName) : "");
     const [description, setDescription] = useState(location.state?.description || "");
