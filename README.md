@@ -1,24 +1,61 @@
-Demo Admin credentials:
- email : icmadmin@gmail.com
- password : admin@123
+# iComputers Frontend
 
-Demo User credentials:
- email : icmuser@gmail.com
- password: user@123
+React-based storefront and administration interface for the iComputers application.
 
-# React + Vite
+## Technology
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- React 19
+- Vite
+- React Router
+- Material UI / Emotion
+- Supabase client
+- Axios
 
-Currently, two official plugins are available:
+## Requirements
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js 20 or later
+- npm
+- Access to the configured backend API
 
-## React Compiler
+## Local development
 
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Clone the repository.
+2. Install dependencies:
 
-## Expanding the ESLint configuration
+   ```bash
+   npm install
+   ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+3. Create a local `.env` file:
+
+   ```env
+   VITE_BACKEND_URL=http://localhost:5000
+   ```
+
+   Replace the URL with the backend API address used by your environment.
+
+4. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+## Available scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the Vite development server |
+| `npm run build` | Create a production build |
+| `npm run lint` | Run ESLint |
+| `npm run preview` | Preview the production build |
+
+## Environment and security
+
+- Do not commit `.env` files, access tokens, passwords, or private keys.
+- Only expose values prefixed with `VITE_` that are safe to be included in a browser bundle. Never put backend secrets in frontend environment variables.
+- Demo account credentials must be provisioned through a controlled process and must never be documented in a public repository.
+- Rotate any credentials that were previously published. Removing them from this README does not remove them from Git history.
+
+## Deployment
+
+Configure `VITE_BACKEND_URL` in the deployment platform's environment settings, then run `npm run build`.
