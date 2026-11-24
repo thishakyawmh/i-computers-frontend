@@ -42,8 +42,12 @@ export default function Checkout() {
     };
 
     const handlePlaceOrder = () => {
-        if (!formData.firstName || !formData.address || !formData.phone) {
-            return toast.error("Please fill in all required fields");
+        const recipientName = `${formData.firstName} ${formData.lastName}`.trim();
+        if (!recipientName || !formData.address.trim() || !formData.city.trim() || !formData.phone.trim()) {
+            return toast.error("Please fill in your recipient name, address, city, and phone number");
+        }
+        if (!/^[+()\\d\\s-]{7,30}$/.test(formData.phone.trim())) {
+            return toast.error("Please enter a valid phone number");
         }
 
         const token = localStorage.getItem("token");
@@ -57,7 +61,8 @@ export default function Checkout() {
         axios.post(import.meta.env.VITE_BACKEND_URL + "/orders", {
             items: cart.map(item => ({ productID: item.productID, quantity: item.quantity })),
             address: formData.city ? `${formData.address}, ${formData.city}` : formData.address,
-            name: `${formData.firstName} ${formData.lastName}`.trim(),
+            recipientName,
+            phone: formData.phone.trim(),
             notes: formData.notes || ""
         },
             { headers: { Authorization: `Bearer ${token}` } }
