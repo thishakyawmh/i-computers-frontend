@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { HiOutlineUserCircle } from "react-icons/hi";
 
 export default function UserAvatar({ user, className = "w-10 h-10" }) {
